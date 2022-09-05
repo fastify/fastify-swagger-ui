@@ -48,12 +48,15 @@
     "@fastify/pre-commit": "^2.0.2",
     "@fastify/swagger": "^7.5.0",
     "@types/node": "^18.0.0",
+    "ajv": "^8.11.0",
     "fastify": "^4.0.0",
     "fs-extra": "^10.1.0",
+    "qs": "^6.11.0",
     "standard": "^17.0.0",
     "swagger-ui-dist": "4.14.0",
     "tap": "^16.2.0",
-    "tsd": "^0.23.0"
+    "tsd": "^0.23.0",
+    "yaml": "^2.1.1"
   },
   "dependencies": {
     "@fastify/static": "^6.0.0",
