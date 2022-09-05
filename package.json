@@ -57,7 +57,7 @@
   },
   "standard": {
     "ignore": [
-      "static"
+      "dist"
     ]
   },
   "tsd": {
