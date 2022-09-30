@@ -1,5 +1,4 @@
-import {FastifyPluginCallback, FastifySchema, onRequestHookHandler, preHandlerHookHandler} from 'fastify';
-import { OpenAPI, OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { FastifyPluginCallback, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
 
 /**
  * Swagger-UI Vendor Extensions

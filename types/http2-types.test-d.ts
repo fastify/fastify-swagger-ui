@@ -28,7 +28,7 @@ app.get('/public/route', {
     summary: 'qwerty',
     security: []
   }
-}, (req, reply) => {});
+}, (_req, _reply) => {});
 
 app
   .register(fastifySwaggerUi, {
