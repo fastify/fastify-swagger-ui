@@ -1,0 +1,81 @@
+{
+  "name": "@fastify/swagger-ui",
+  "version": "1.0.0",
+  "description": "Serve Swagger-ui for Fastify",
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "coverage": "npm run unit -- --coverage-report=lcovonly",
+    "lint": "standard",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "node scripts/prepare-swagger-ui",
+    "prepublishOnly": "npm run prepare",
+    "test": "npm run prepare && npm run coverage && npm run typescript",
+    "test:dev": "npm run lint && npm run unit && npm run typescript",
+    "typescript": "tsd",
+    "unit": "tap",
+    "unit:report": "npm run unit -- --coverage-report=html",
+    "unit:verbose": "npm run unit -- -Rspec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-swagger.git"
+  },
+  "keywords": [
+    "fastify",
+    "swagger",
+    "openapi",
+    "swagger-ui",
+    "serve",
+    "static"
+  ],
+  "author": "Tomas Della Vedova - @delvedor (http://delved.org)",
+  "contributors": [
+    {
+      "name": "Matteo Collina",
+      "email": "hello@matteocollina.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-swagger/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-swagger#readme",
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "@fastify/basic-auth": "^4.0.0",
+    "@fastify/helmet": "^10.0.0",
+    "@fastify/pre-commit": "^2.0.2",
+    "@fastify/swagger": "fastify/fastify-swagger#ui-patch",
+    "@types/node": "^18.0.0",
+    "ajv": "^8.11.0",
+    "fastify": "^4.0.0",
+    "fs-extra": "^10.1.0",
+    "qs": "^6.11.0",
+    "standard": "^17.0.0",
+    "swagger-ui-dist": "4.14.0",
+    "tap": "^16.2.0",
+    "tsd": "^0.23.0",
+    "yaml": "^2.1.1"
+  },
+  "dependencies": {
+    "@fastify/static": "^6.0.0",
+    "fastify-plugin": "^4.0.0",
+    "openapi-types": "^12.0.2"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ]
+  },
+  "tsd": {
+    "directory": "types"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
+}

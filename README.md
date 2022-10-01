@@ -1,37 +1,121 @@
-# skeleton
+# @fastify/swagger-ui
 
-Template repository to create standardized Fastify plugins.
+[![NPM version](https://img.shields.io/npm/v/@fastify/swagger.svg?style=flat)](https://www.npmjs.com/package/@fastify/swagger)
+![CI](https://github.com/fastify/fastify-swagger-ui/workflows/CI/badge.svg)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
-# Getting started
+A Fastify plugin for serving [Swagger UI](https://swagger.io/tools/swagger-ui/).
 
-- Click on `Use this template` above to create a new repository based on this repository.
+Supports Fastify versions `4.x`.
 
-# What's included?
-
-1. Github CI Actions for installing, testing your package.
-2. Github CI Actions to validate different package managers.
-3. Dependabot V2 config to automate dependency updates.
-4. Template for the GitHub App [Stale](https://github.com/apps/stale) to mark issues as stale. 
-5. Template for the GitHub App [tests-checker](https://github.com/apps/tests-checker) to check if a PR contains tests.
-
-# Repository structure
-
+<a name="install"></a>
+## Install
 ```
-├── .github
-│   ├── workflows
-│   │   ├── ci.yml
-│   │   └── package-manager-ci.yml
-│   ├── .stale.yml
-│   ├── dependabot.yml
-│   └── tests_checker.yml
-│
-├── docs (Documentation)
-│   
-├── examples (Code examples)
-│
-├── test (Application tests)
-│   
-├── types (Typescript types)
-│  
-└── README.md
+npm i @fastify/swagger-ui
 ```
+
+<a name="usage"></a>
+## Usage
+Add it with `@fastify/swagger` to your project with `register`, pass it some options, call the `swagger` API, and you are done!
+
+```js
+const fastify = require('fastify')()
+
+await fastify.register(require('@fastify/swagger'))
+
+await fastify.register(require('fastify/swagger-ui'), {
+  routePrefix: '/documentation',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false
+  },
+  uiHooks: {
+    onRequest: function (request, reply, next) { next() },
+    preHandler: function (request, reply, next) { next() }
+  },
+  staticCSP: true,
+  transformStaticCSP: (header) => header,
+})
+
+fastify.put('/some-route/:id', {
+  schema: {
+    description: 'post some data',
+    tags: ['user', 'code'],
+    summary: 'qwerty',
+    params: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'user id'
+        }
+      }
+    },
+    body: {
+      type: 'object',
+      properties: {
+        hello: { type: 'string' },
+        obj: {
+          type: 'object',
+          properties: {
+            some: { type: 'string' }
+          }
+        }
+      }
+    },
+    response: {
+      201: {
+        description: 'Successful response',
+        type: 'object',
+        properties: {
+          hello: { type: 'string' }
+        }
+      },
+      default: {
+        description: 'Default response',
+        type: 'object',
+        properties: {
+          foo: { type: 'string' }
+        }
+      }
+    },
+    security: [
+      {
+        "apiKey": []
+      }
+    ]
+  }
+}, (req, reply) => {})
+
+await fastify.ready()
+```
+<a name="api"></a>
+## API
+
+<a name="register.options"></a>
+### Register options
+
+#### Options
+
+ | Option             | Default          | Description                                                                                                               |
+ | ------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+ | initOAuth          | {}               | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).     |
+ | routePrefix         | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                            |
+ | staticCSP          | false            | Enable CSP header for static resources.                                                                                   |
+ | transformStaticCSP | undefined         | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
+ | uiConfig            | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Must be literal values, see [#5710](https://github.com/swagger-api/swagger-ui/issues/5710).|
+ | uiHooks            | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
+
+The plugin will expose the documentation with the following APIs:
+
+| URL                     | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `'/documentation/json'` | The JSON object representing the API       |
+| `'/documentation/yaml'` | The YAML object representing the API       |
+| `'/documentation/'`     | The swagger UI                             |
+| `'/documentation/*'`    | External files that you may use in `$ref`  |
+
+<a name="license"></a>
+## License
+
+Licensed under [MIT](./LICENSE).
