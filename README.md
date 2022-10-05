@@ -99,11 +99,12 @@ await fastify.ready()
 
  | Option             | Default          | Description                                                                                                               |
  | ------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+ | baseDir            | undefined        | Specify the directory where all spec files that are included in the main one using $ref will be located. By default, this is the directory where the main spec file is located. Provided value should be an absolute path without trailing slash.     |
  | initOAuth          | {}               | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).     |
- | routePrefix         | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                            |
+ | routePrefix        | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                            |
  | staticCSP          | false            | Enable CSP header for static resources.                                                                                   |
  | transformStaticCSP | undefined         | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
- | uiConfig            | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Must be literal values, see [#5710](https://github.com/swagger-api/swagger-ui/issues/5710).|
+ | uiConfig           | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Must be literal values, see [#5710](https://github.com/swagger-api/swagger-ui/issues/5710).|
  | uiHooks            | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
 
 The plugin will expose the documentation with the following APIs:
