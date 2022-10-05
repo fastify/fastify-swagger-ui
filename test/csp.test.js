@@ -3,6 +3,7 @@
 const { test } = require('tap')
 const Fastify = require('fastify')
 const fastifyHelmet = require('@fastify/helmet')
+const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('..')
 const {
   schemaQuerystring,
@@ -17,7 +18,9 @@ test('staticCSP = undefined', async (t) => {
   t.plan(3)
 
   const fastify = Fastify()
-  await fastify.register(fastifySwaggerUi, swaggerOption)
+
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi)
 
   fastify.get('/', () => {})
   fastify.post('/', () => {})
@@ -39,8 +42,8 @@ test('staticCSP = true', async (t) => {
   t.plan(5)
 
   const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, {
-    ...swaggerOption,
     staticCSP: true
   })
 
@@ -75,8 +78,8 @@ test('staticCSP = "default-src \'self\';"', async (t) => {
   t.plan(5)
 
   const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, {
-    ...swaggerOption,
     staticCSP: "default-src 'self';"
   })
 
@@ -111,8 +114,8 @@ test('staticCSP = object', async (t) => {
   t.plan(5)
 
   const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, {
-    ...swaggerOption,
     staticCSP: {
       'default-src': ["'self'"],
       'script-src': "'self'"
@@ -150,8 +153,8 @@ test('transformStaticCSP = function', async (t) => {
   t.plan(6)
 
   const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, {
-    ...swaggerOption,
     staticCSP: "default-src 'self';",
     transformStaticCSP: function (header) {
       t.equal(header, "default-src 'self';")
@@ -191,8 +194,8 @@ test('transformStaticCSP = function, with @fastify/helmet', async (t) => {
 
   const fastify = Fastify()
   fastify.register(fastifyHelmet)
+  await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, {
-    ...swaggerOption,
     transformStaticCSP: function (header) {
       t.equal(header, "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests")
       return "default-src 'self'; script-src 'self';"

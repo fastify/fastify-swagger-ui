@@ -5,6 +5,7 @@ const fp = require('fastify-plugin')
 function fastifySwaggerUi (fastify, opts, next) {
   fastify.decorate('swaggerCSP', require('./dist/csp.json'))
 
+  const baseDir = opts.baseDir
   const prefix = opts.routePrefix || '/documentation'
   const uiConfig = opts.uiConfig || {}
   const initOAuth = opts.initOAuth || {}
@@ -13,6 +14,7 @@ function fastifySwaggerUi (fastify, opts, next) {
   const hooks = opts.uiHooks
 
   fastify.register(require('./lib/routes'), {
+    baseDir,
     prefix,
     uiConfig,
     initOAuth,
@@ -26,5 +28,6 @@ function fastifySwaggerUi (fastify, opts, next) {
 
 module.exports = fp(fastifySwaggerUi, {
   fastify: '4.x',
-  name: '@fastify/swagger-ui'
+  name: '@fastify/swagger-ui',
+  dependencies: ['@fastify/swagger']
 })

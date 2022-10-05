@@ -3,11 +3,9 @@
 const { test } = require('tap')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
-const fastifySwaggerUi = require('..')
+const fastifySwaggerUi = require('../index')
 const yaml = require('yaml')
-// const path = require('path')
-// const Swagger = require('@apidevtools/swagger-parser')
-// const readFileSync = require('fs').readFileSync
+const readFileSync = require('fs').readFileSync
 const resolve = require('path').resolve
 
 test('swagger route returns yaml', async (t) => {
@@ -121,53 +119,57 @@ test('swagger route returns explicitly passed doc', async (t) => {
   t.pass('valid explicitly passed spec document')
 })
 
-// test('/documentation/:file should serve static file from the location of main specification file', async (t) => {
-//   const config = {
-//     mode: 'static',
-//     specification: {
-//       path: './examples/example-static-specification.yaml'
-//     }
-//   }
+test('/documentation/:file should serve static file from the location of main specification file', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
 
-//   t.plan(4)
-//   const fastify = new Fastify()
-//   await fastify.register(fastifySwagger, config)
-//   await fastify.register(fastifySwaggerUi)
+  const uiConfig = {
+    baseDir: resolve(__dirname, '..', 'examples')
+  }
 
-//   {
-//     const res = await fastify.inject({
-//       method: 'GET',
-//       url: '/documentation/non-existing-file'
-//     })
+  t.plan(4)
+  const fastify = new Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, uiConfig)
 
-//     t.equal(res.statusCode, 404)
-//   }
+  {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation/non-existing-file'
+    })
 
-//   {
-//     const res = await fastify.inject({
-//       method: 'GET',
-//       url: '/documentation/example-static-specification.yaml'
-//     })
+    t.equal(res.statusCode, 404)
+  }
 
-//     t.equal(res.statusCode, 200)
-//     t.equal(
-//       readFileSync(
-//         resolve(__dirname, '..', '..', 'examples', 'example-static-specification.yaml'),
-//         'utf8'
-//       ),
-//       res.payload
-//     )
-//   }
+  {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation/example-static-specification.yaml'
+    })
 
-//   {
-//     const res = await fastify.inject({
-//       method: 'GET',
-//       url: '/documentation/dynamic-swagger.js'
-//     })
+    t.equal(res.statusCode, 200)
+    t.equal(
+      readFileSync(
+        resolve(__dirname, '..', 'examples', 'example-static-specification.yaml'),
+        'utf8'
+      ),
+      res.payload
+    )
+  }
 
-//     t.equal(res.statusCode, 200)
-//   }
-// })
+  {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation/dynamic-swagger.js'
+    })
+
+    t.equal(res.statusCode, 200)
+  }
+})
 
 test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) => {
   const config = {
@@ -193,58 +195,65 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
   t.equal(res.statusCode, 410)
 })
 
-// test('/documentation/:file should be served from custom location', async (t) => {
-//   const config = {
-//     mode: 'static',
-//     specification: {
-//       path: './examples/example-static-specification.yaml',
-//       baseDir: resolve(__dirname, '..', 'dist')
-//     }
-//   }
+test('/documentation/:file should be served from custom location', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml',
+      baseDir: resolve(__dirname, '..', 'dist')
+    }
+  }
 
-//   t.plan(2)
-//   const fastify = new Fastify()
-//   await fastify.register(fastifySwagger, config)
-//   await fastify.register(fastifySwaggerUi)
+  const uiConfig = {
+    baseDir: resolve(__dirname, '..', 'dist')
+  }
 
-//   const res = await fastify.inject({
-//     method: 'GET',
-//     url: '/documentation/oauth2-redirect.html'
-//   })
+  t.plan(2)
+  const fastify = new Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, uiConfig)
 
-//   const fileContent = readFileSync(resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'), 'utf8')
-//   t.equal(res.statusCode, 200)
-//   t.equal(
-//     fileContent,
-//     res.payload
-//   )
-// })
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/oauth2-redirect.html'
+  })
 
-// test('/documentation/:file should be served from custom location with trailing slash(es)', async (t) => {
-//   const config = {
-//     mode: 'static',
-//     specification: {
-//       path: './examples/example-static-specification.yaml',
-//       baseDir: resolve(__dirname, '..', '..', 'dist') + '/'
-//     }
-//   }
+  const fileContent = readFileSync(resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'), 'utf8')
+  t.equal(res.statusCode, 200)
+  t.equal(
+    fileContent,
+    res.payload
+  )
+})
 
-//   t.plan(2)
-//   const fastify = new Fastify()
-//   await fastify.register(fastifySwagger, config)
-//   await fastify.register(fastifySwaggerUi)
+test('/documentation/:file should be served from custom location with trailing slash(es)', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
 
-//   const res = await fastify.inject({
-//     method: 'GET',
-//     url: '/documentation/oauth2-redirect.html'
-//   })
+  const uiConfig = {
+    baseDir: resolve(__dirname, '..', 'dist') + '/'
+  }
 
-//   t.equal(res.statusCode, 200)
-//   t.equal(
-//     readFileSync(resolve(__dirname, '..', '..', 'dist', 'oauth2-redirect.html'), 'utf8'),
-//     res.payload
-//   )
-// })
+  t.plan(2)
+  const fastify = new Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, uiConfig)
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/oauth2-redirect.html'
+  })
+
+  t.equal(res.statusCode, 200)
+  t.equal(
+    readFileSync(resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'), 'utf8'),
+    res.payload
+  )
+})
 
 test('/documentation/yaml returns cache.swaggerString on second request in static mode', async (t) => {
   const config = {

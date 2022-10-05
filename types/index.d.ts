@@ -29,6 +29,7 @@ declare module 'fastify' {
 export const fastifySwaggerUi: FastifyPluginCallback<FastifySwaggerUiOptions>;
 
 export interface FastifySwaggerUiOptions {
+  baseDir?: string;
   /**
    * Overwrite the swagger url end-point
    * @default /documentation
