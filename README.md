@@ -23,7 +23,7 @@ const fastify = require('fastify')()
 
 await fastify.register(require('@fastify/swagger'))
 
-await fastify.register(require('fastify/swagger-ui'), {
+await fastify.register(require('@fastify/swagger-ui'), {
   routePrefix: '/documentation',
   uiConfig: {
     docExpansion: 'full',
