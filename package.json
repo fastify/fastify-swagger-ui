@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fastify/fastify-swagger.git"
+    "url": "git+https://github.com/fastify/fastify-swagger-ui.git"
   },
   "keywords": [
     "fastify",
@@ -38,9 +38,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fastify/fastify-swagger/issues"
+    "url": "https://github.com/fastify/fastify-swagger-ui/issues"
   },
-  "homepage": "https://github.com/fastify/fastify-swagger#readme",
+  "homepage": "https://github.com/fastify/fastify-swagger-ui#readme",
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@fastify/basic-auth": "^4.0.0",
