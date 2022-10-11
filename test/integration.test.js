@@ -5,7 +5,7 @@ const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifyHelmet = require('@fastify/helmet')
 const fastifySwaggerUi = require('../index')
-const swaggerCSP = require('../dist/csp.json')
+const swaggerCSP = require('../static/csp.json')
 
 test('fastify will response swagger csp', async (t) => {
   t.plan(1)
