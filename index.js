@@ -3,7 +3,7 @@
 const fp = require('fastify-plugin')
 
 function fastifySwaggerUi (fastify, opts, next) {
-  fastify.decorate('swaggerCSP', require('./dist/csp.json'))
+  fastify.decorate('swaggerCSP', require('./static/csp.json'))
 
   const baseDir = opts.baseDir
   const prefix = opts.routePrefix || '/documentation'

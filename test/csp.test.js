@@ -12,7 +12,7 @@ const {
   schemaSecurity,
   swaggerOption
 } = require('../examples/options')
-const csp = require('../dist/csp.json')
+const csp = require('../static/csp.json')
 
 test('staticCSP = undefined', async (t) => {
   t.plan(3)

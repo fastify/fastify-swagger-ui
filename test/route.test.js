@@ -346,7 +346,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'text/html; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'index.html'),
+        resolve(__dirname, '..', 'static', 'index.html'),
         'utf8'
       ),
       res.payload
@@ -363,7 +363,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'swagger-initializer.js'),
+        resolve(__dirname, '..', 'static', 'swagger-initializer.js'),
         'utf8'
       ),
       res.payload
@@ -380,7 +380,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'text/html; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'),
+        resolve(__dirname, '..', 'static', 'oauth2-redirect.html'),
         'utf8'
       ),
       res.payload
@@ -396,7 +396,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'text/css; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'swagger-ui.css'),
+        resolve(__dirname, '..', 'static', 'swagger-ui.css'),
         'utf8'
       ),
       res.payload
@@ -412,7 +412,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'swagger-ui-bundle.js'),
+        resolve(__dirname, '..', 'static', 'swagger-ui-bundle.js'),
         'utf8'
       ),
       res.payload
@@ -428,7 +428,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
     t.equal(
       readFileSync(
-        resolve(__dirname, '..', 'dist', 'swagger-ui-standalone-preset.js'),
+        resolve(__dirname, '..', 'static', 'swagger-ui-standalone-preset.js'),
         'utf8'
       ),
       res.payload

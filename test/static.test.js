@@ -200,12 +200,12 @@ test('/documentation/:file should be served from custom location', async (t) => 
     mode: 'static',
     specification: {
       path: './examples/example-static-specification.yaml',
-      baseDir: resolve(__dirname, '..', 'dist')
+      baseDir: resolve(__dirname, '..', 'static')
     }
   }
 
   const uiConfig = {
-    baseDir: resolve(__dirname, '..', 'dist')
+    baseDir: resolve(__dirname, '..', 'static')
   }
 
   t.plan(2)
@@ -218,7 +218,7 @@ test('/documentation/:file should be served from custom location', async (t) => 
     url: '/documentation/oauth2-redirect.html'
   })
 
-  const fileContent = readFileSync(resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'), 'utf8')
+  const fileContent = readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8')
   t.equal(res.statusCode, 200)
   t.equal(
     fileContent,
@@ -235,7 +235,7 @@ test('/documentation/:file should be served from custom location with trailing s
   }
 
   const uiConfig = {
-    baseDir: resolve(__dirname, '..', 'dist') + '/'
+    baseDir: resolve(__dirname, '..', 'static') + '/'
   }
 
   t.plan(2)
@@ -250,7 +250,7 @@ test('/documentation/:file should be served from custom location with trailing s
 
   t.equal(res.statusCode, 200)
   t.equal(
-    readFileSync(resolve(__dirname, '..', 'dist', 'oauth2-redirect.html'), 'utf8'),
+    readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8'),
     res.payload
   )
 })

@@ -1,3 +1,6 @@
+# @fastify/swagger-ui specific
+/static
+
 # Logs
 logs
 *.log

@@ -4,7 +4,9 @@ const crypto = require('crypto')
 const swaggerUiAssetPath = require('swagger-ui-dist').getAbsoluteFSPath()
 const resolve = require('path').resolve
 
-fse.emptyDirSync(resolve('./dist'))
+const folderName = 'static'
+
+fse.emptyDirSync(resolve(`./${folderName}`))
 
 // since the original swagger-ui-dist folder contains non UI files
 const filesToCopy = [
@@ -24,10 +26,10 @@ const filesToCopy = [
   'swagger-ui.js.map'
 ]
 filesToCopy.forEach(filename => {
-  fse.copySync(`${swaggerUiAssetPath}/${filename}`, resolve(`./dist/${filename}`))
+  fse.copySync(`${swaggerUiAssetPath}/${filename}`, resolve(`./static/${filename}`))
 })
 
-fse.writeFileSync(resolve('./dist/swagger-initializer.js'), `window.onload = function () {
+fse.writeFileSync(resolve(`./${folderName}/swagger-initializer.js`), `window.onload = function () {
   function resolveUrl (url) {
       const anchor = document.createElement('a')
       anchor.href = url
@@ -36,7 +38,7 @@ fse.writeFileSync(resolve('./dist/swagger-initializer.js'), `window.onload = fun
 
   function resolveConfig (cb) {
     return fetch(
-      resolveUrl('./uiConfig').replace('dist/uiConfig', 'uiConfig')
+      resolveUrl('./uiConfig').replace('${folderName}/uiConfig', 'uiConfig')
     )
       .then(res => res.json())
       .then((config) => {
@@ -52,7 +54,7 @@ fse.writeFileSync(resolve('./dist/swagger-initializer.js'), `window.onload = fun
           ],
           layout: "StandaloneLayout"
         }, config, {
-          url: resolveUrl('./json').replace('dist/json', 'json'),
+          url: resolveUrl('./json').replace('${folderName}/json', 'json'),
           oauth2RedirectUrl: resolveUrl('./oauth2-redirect.html')
         });
         return cb(resConfig);
@@ -64,7 +66,7 @@ fse.writeFileSync(resolve('./dist/swagger-initializer.js'), `window.onload = fun
     const ui = SwaggerUIBundle(config)
     window.ui = ui
 
-    fetch(resolveUrl('./initOAuth').replace('dist/initOAuth', 'initOAuth'))
+    fetch(resolveUrl('./initOAuth').replace('${folderName}/initOAuth', 'initOAuth'))
       .then(res => res.json())
       .then((config) => {
         ui.initOAuth(config);
@@ -99,6 +101,6 @@ function computeCSPHashes (path) {
     result = styleRegex.exec(indexSrc)
   }
 }
-computeCSPHashes('./dist/index.html')
-computeCSPHashes('./dist/oauth2-redirect.html')
-fse.writeFileSync(resolve('./dist/csp.json'), JSON.stringify(sha))
+computeCSPHashes(`./${folderName}/index.html`)
+computeCSPHashes(`./${folderName}/oauth2-redirect.html`)
+fse.writeFileSync(resolve(`./${folderName}/csp.json`), JSON.stringify(sha))
