@@ -5,24 +5,15 @@ const fp = require('fastify-plugin')
 function fastifySwaggerUi (fastify, opts, next) {
   fastify.decorate('swaggerCSP', require('./static/csp.json'))
 
-  const baseDir = opts.baseDir
-  const prefix = opts.routePrefix || '/documentation'
-  const uiConfig = opts.uiConfig || {}
-  const initOAuth = opts.initOAuth || {}
-  const staticCSP = opts.staticCSP
-  const transformStaticCSP = opts.transformStaticCSP
-  const hooks = opts.uiHooks
-  const logLevel = opts.logLevel
-
   fastify.register(require('./lib/routes'), {
-    baseDir,
-    prefix,
-    uiConfig,
-    initOAuth,
-    staticCSP,
-    transformStaticCSP,
-    hooks,
-    logLevel
+    baseDir: opts.baseDir,
+    prefix: opts.routePrefix || '/documentation',
+    uiConfig: opts.uiConfig || {},
+    initOAuth: opts.initOAuth || {},
+    staticCSP: opts.staticCSP,
+    transformStaticCSP: opts.transformStaticCSP,
+    hooks: opts.uiHooks,
+    logLevel: opts.logLevel
   })
 
   next()
