@@ -12,6 +12,7 @@ function fastifySwaggerUi (fastify, opts, next) {
   const staticCSP = opts.staticCSP
   const transformStaticCSP = opts.transformStaticCSP
   const hooks = opts.uiHooks
+  const logLevel = opts.logLevel
 
   fastify.register(require('./lib/routes'), {
     baseDir,
@@ -20,7 +21,8 @@ function fastifySwaggerUi (fastify, opts, next) {
     initOAuth,
     staticCSP,
     transformStaticCSP,
-    hooks
+    hooks,
+    logLevel
   })
 
   next()

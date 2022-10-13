@@ -9,7 +9,7 @@ fastify.register(require('@fastify/swagger'), {
   }
 })
 
-fastify.reqister(require('../index'))
+fastify.register(require('../index'))
 
 fastify.listen({ port: 3000 }, (err) => {
   if (err) throw err
