@@ -530,3 +530,39 @@ test('/documentation/ should redirect to ./static/index.html', async (t) => {
   t.equal(res.statusCode, 302)
   t.equal(res.headers.location, './static/index.html')
 })
+
+test('should return silent log level of route /documentation', async (t) => {
+  const fastify = Fastify()
+
+  fastify.addHook('onRoute', function (route) {
+    t.equal(route.logLevel, 'silent')
+  })
+
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { logLevel: 'silent' })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/'
+  })
+  t.equal(res.statusCode, 302)
+  t.equal(res.headers.location, './static/index.html')
+})
+
+test('should return empty log level of route /documentation', async (t) => {
+  const fastify = Fastify()
+
+  fastify.addHook('onRoute', function (route) {
+    t.equal(route.logLevel, '')
+  })
+
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi)
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/'
+  })
+  t.equal(res.statusCode, 302)
+  t.equal(res.headers.location, './static/index.html')
+})
