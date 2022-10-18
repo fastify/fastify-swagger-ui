@@ -74,6 +74,35 @@ test('hooks on static swagger', async t => {
   }
 })
 
+test('onSend hook on static swagger', async t => {
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  })
+  await fastify.register(fastifySwaggerUi, {
+    uiHooks: {
+      onSend: function (request, reply, payload, done) {
+        const swagger = JSON.parse(payload)
+        swagger.description = 'TestOnSend'
+        const newPayload = JSON.stringify(swagger)
+        done(null, newPayload)
+      }
+    }
+  })
+
+  const res = await fastify.inject('/documentation/json')
+  t.equal(res.statusCode, 200)
+  t.equal(typeof res.payload, 'string')
+  t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
+
+  const swaggerObject = res.json()
+  t.ok(swaggerObject.description)
+  t.equal(swaggerObject.description, 'TestOnSend')
+})
+
 test('hooks on dynamic swagger', async t => {
   const fastify = Fastify()
   await fastify.register(require('@fastify/basic-auth'), authOptions)
