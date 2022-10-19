@@ -51,7 +51,7 @@ test('transformSwagger should modify the json', async (t) => {
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwagger: function (req, reply, swaggerObject) {
+    transformSwagger: function (swaggerObject, req, reply) {
       swaggerObject.swagger = '2.1'
       return swaggerObject
     }
@@ -113,7 +113,7 @@ test('transformSwagger should modify the yaml', async (t) => {
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwagger: function (req, reply, swaggerObject) {
+    transformSwagger: function (swaggerObject, req, reply) {
       swaggerObject.swagger = '2.1'
       return swaggerObject
     }
@@ -121,11 +121,12 @@ test('transformSwagger should modify the yaml', async (t) => {
 
   await fastify.ready()
 
+  const swaggerPre = fastify.swagger()
   const res = await fastify.inject({
     method: 'GET',
     url: '/documentation/yaml'
   })
 
-  t.notSame(fastify.swagger({ yaml: true }), res.body)
+  t.same(fastify.swagger(), swaggerPre)
   t.equal(yaml.parse(res.body).swagger, '2.1')
 })

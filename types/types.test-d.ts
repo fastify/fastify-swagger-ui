@@ -1,5 +1,5 @@
 import fastify, { FastifyReply, FastifyRequest } from 'fastify';
-import { expectType } from 'tsd';
+import { expectError, expectType } from 'tsd';
 import fastifySwaggerUi, {
   FastifySwaggerUiOptions,
   FastifySwaggerInitOAuthOptions,
@@ -131,9 +131,10 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifySwaggerUi, {
-  transformSwagger: (req, reply, obj) => {
-    expectType<FastifyRequest>(req)
+  transformSwagger: (swaggerObj, request, reply) => {
+    expectType<FastifyRequest>(request)
     expectType<FastifyReply>(reply)
-    expectType<Record<string, any>>(obj)
+    expectType<Readonly<Record<string, any>>>(swaggerObj)
+    return swaggerObj
   }
 })
