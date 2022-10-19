@@ -1,4 +1,4 @@
-import { FastifyPluginCallback, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
+import { FastifyPluginCallback, onRequestHookHandler, onSendHookHandler, preHandlerHookHandler } from 'fastify';
 
 /**
  * Swagger-UI Vendor Extensions
@@ -87,9 +87,10 @@ export type FastifySwaggerInitOAuthOptions = Partial<{
   usePkceWithAuthorizationCodeGrant: boolean
 }>
 
-export type FastifySwaggerUiHooksOptions = Partial<{
+export type FastifySwaggerUiHooksOptions<OnSendPayload = string> = Partial<{
   onRequest?: onRequestHookHandler,
   preHandler?: preHandlerHookHandler,
+  onSend?: onSendHookHandler<OnSendPayload>
 }>
 
 export default fastifySwaggerUi;
