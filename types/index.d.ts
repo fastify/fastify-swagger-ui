@@ -1,4 +1,4 @@
-import { FastifyPluginCallback, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
+import { FastifyPluginCallback, FastifyReply, FastifyRequest, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
 
 /**
  * Swagger-UI Vendor Extensions
@@ -49,6 +49,8 @@ export interface FastifySwaggerUiOptions {
    * route hooks
    */
   uiHooks?: FastifySwaggerUiHooksOptions
+
+  transformSwagger?: (req: FastifyRequest, reply: FastifyReply, swaggerObject: any) => any
 }
 
 export type FastifySwaggerUiConfigOptions = Partial<{
