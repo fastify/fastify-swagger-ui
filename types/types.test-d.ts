@@ -1,5 +1,5 @@
 import fastify, { FastifyReply, FastifyRequest } from 'fastify';
-import { expectError, expectType } from 'tsd';
+import { expectType } from 'tsd';
 import fastifySwaggerUi, {
   FastifySwaggerUiOptions,
   FastifySwaggerInitOAuthOptions,
