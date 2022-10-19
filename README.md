@@ -35,6 +35,7 @@ await fastify.register(require('@fastify/swagger-ui'), {
   },
   staticCSP: true,
   transformStaticCSP: (header) => header,
+  transformSwagger: (req, reply, swaggerObject) => { return swaggerObject }
 })
 
 fastify.put('/some-route/:id', {
@@ -103,7 +104,8 @@ await fastify.ready()
  | initOAuth          | {}               | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).     |
  | routePrefix        | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                            |
  | staticCSP          | false            | Enable CSP header for static resources.                                                                                   |
- | transformStaticCSP | undefined         | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
+ | transformStaticCSP | undefined        | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
+ | transformSwagger   | undefined        | Synchronous function to transform the swagger document.
  | uiConfig           | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Must be literal values, see [#5710](https://github.com/swagger-api/swagger-ui/issues/5710).|
  | uiHooks            | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
  | logLevel           | info             | Allow to define route log level.|
