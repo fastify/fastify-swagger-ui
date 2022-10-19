@@ -1,4 +1,5 @@
-import fastify from 'fastify';
+import fastify, { FastifyReply, FastifyRequest } from 'fastify';
+import { expectType } from 'tsd';
 import fastifySwaggerUi, {
   FastifySwaggerUiOptions,
   FastifySwaggerInitOAuthOptions,
@@ -127,4 +128,12 @@ app.register(fastifySwaggerUi, {
 
 app.register(fastifySwaggerUi, {
   uiHooks,
+})
+
+app.register(fastifySwaggerUi, {
+  transformSwagger: (req, reply, obj) => {
+    expectType<FastifyRequest>(req)
+    expectType<FastifyReply>(reply)
+    expectType<Record<string, any>>(obj)
+  }
 })

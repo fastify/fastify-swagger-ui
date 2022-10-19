@@ -50,7 +50,7 @@ export interface FastifySwaggerUiOptions {
    */
   uiHooks?: FastifySwaggerUiHooksOptions
 
-  transformSwagger?: (req: FastifyRequest, reply: FastifyReply, swaggerObject: any) => any
+  transformSwagger?: (req: FastifyRequest, reply: FastifyReply, swaggerObject: Record<string, any>) => any
 }
 
 export type FastifySwaggerUiConfigOptions = Partial<{
