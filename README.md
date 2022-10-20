@@ -35,7 +35,7 @@ await fastify.register(require('@fastify/swagger-ui'), {
   },
   staticCSP: true,
   transformStaticCSP: (header) => header,
-  transformSwagger: (req, reply, swaggerObject) => { return swaggerObject }
+  transformSwagger: (swaggerObject, request, reply) => { return swaggerObject }
 })
 
 fastify.put('/some-route/:id', {
