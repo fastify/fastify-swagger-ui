@@ -53,7 +53,7 @@
     "fs-extra": "^10.1.0",
     "qs": "^6.11.0",
     "standard": "^17.0.0",
-    "swagger-ui-dist": "4.14.3",
+    "swagger-ui-dist": "4.15.0",
     "tap": "^16.2.0",
     "tsd": "^0.24.1",
     "yaml": "^2.1.1"
