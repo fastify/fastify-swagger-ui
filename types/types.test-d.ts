@@ -131,6 +131,7 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifySwaggerUi, {
+  transformSwaggerClone: true,
   transformSwagger: (swaggerObj, request, reply) => {
     expectType<FastifyRequest>(request)
     expectType<FastifyReply>(reply)
