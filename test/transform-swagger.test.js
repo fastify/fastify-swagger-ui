@@ -6,7 +6,7 @@ const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
 const yaml = require('yaml')
 
-test('transformSwagger should modify the json', async (t) => {
+test('transformSpecification should modify the json', async (t) => {
   t.plan(3)
   const fastify = Fastify()
 
@@ -51,7 +51,7 @@ test('transformSwagger should modify the json', async (t) => {
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwagger: function (swaggerObject, req, reply) {
+    transformSpecification: function (swaggerObject, req, reply) {
       t.not(swaggerObject, fastify.swagger())
       swaggerObject.swagger = '2.1'
       return swaggerObject
@@ -69,7 +69,7 @@ test('transformSwagger should modify the json', async (t) => {
   t.equal(JSON.parse(res.body).swagger, '2.1')
 })
 
-test('transformSwaggerClone false should not deepclone fastify.swagger() /1', async (t) => {
+test('transformSpecificationClone false should not deepclone fastify.swagger() /1', async (t) => {
   t.plan(2)
   const fastify = Fastify()
 
@@ -114,8 +114,8 @@ test('transformSwaggerClone false should not deepclone fastify.swagger() /1', as
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwaggerClone: false,
-    transformSwagger: function (swaggerObject, req, reply) {
+    transformSpecificationClone: false,
+    transformSpecification: function (swaggerObject, req, reply) {
       t.equal(swaggerObject, fastify.swagger())
       return swaggerObject
     }
@@ -131,7 +131,7 @@ test('transformSwaggerClone false should not deepclone fastify.swagger() /1', as
   t.strictSame(fastify.swagger(), JSON.parse(res.body))
 })
 
-test('transformSwagger should modify the yaml', async (t) => {
+test('transformSpecification should modify the yaml', async (t) => {
   t.plan(2)
   const fastify = Fastify()
 
@@ -176,7 +176,7 @@ test('transformSwagger should modify the yaml', async (t) => {
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwagger: function (swaggerObject, req, reply) {
+    transformSpecification: function (swaggerObject, req, reply) {
       swaggerObject.swagger = '2.1'
       return swaggerObject
     }
@@ -194,7 +194,7 @@ test('transformSwagger should modify the yaml', async (t) => {
   t.equal(yaml.parse(res.body).swagger, '2.1')
 })
 
-test('transformSwaggerClone false should not deepclone fastify.swagger() /2', async (t) => {
+test('transformSpecificationClone false should not deepclone fastify.swagger() /2', async (t) => {
   t.plan(2)
   const fastify = Fastify()
 
@@ -239,8 +239,8 @@ test('transformSwaggerClone false should not deepclone fastify.swagger() /2', as
     }
   })
   await fastify.register(fastifySwaggerUi, {
-    transformSwaggerClone: false,
-    transformSwagger: function (swaggerObject, req, reply) {
+    transformSpecificationClone: false,
+    transformSpecification: function (swaggerObject, req, reply) {
       t.equal(swaggerObject, fastify.swagger())
       return swaggerObject
     }

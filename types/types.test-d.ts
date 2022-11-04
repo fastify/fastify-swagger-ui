@@ -131,8 +131,8 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifySwaggerUi, {
-  transformSwaggerClone: true,
-  transformSwagger: (swaggerObj, request, reply) => {
+  transformSpecificationClone: true,
+  transformSpecification: (swaggerObj, request, reply) => {
     expectType<FastifyRequest>(request)
     expectType<FastifyReply>(reply)
     expectType<Readonly<Record<string, any>>>(swaggerObj)

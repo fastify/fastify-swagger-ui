@@ -50,8 +50,8 @@ export interface FastifySwaggerUiOptions {
    */
   uiHooks?: FastifySwaggerUiHooksOptions
 
-  transformSwagger?: (swaggerObject: Readonly<Record<string, any>>, request: FastifyRequest, reply: FastifyReply) => Record<string, any>
-  transformSwaggerClone?: boolean
+  transformSpecification?: (swaggerObject: Readonly<Record<string, any>>, request: FastifyRequest, reply: FastifyReply) => Record<string, any>
+  transformSpecificationClone?: boolean
 }
 
 export type FastifySwaggerUiConfigOptions = Partial<{
