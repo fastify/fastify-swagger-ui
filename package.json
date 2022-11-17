@@ -54,7 +54,7 @@
     "qs": "^6.11.0",
     "standard": "^17.0.0",
     "swagger-ui-dist": "4.15.5",
-    "tap": "^16.2.0",
+    "tap": "^16.3.2",
     "tsd": "^0.24.1"
   },
   "dependencies": {
