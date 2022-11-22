@@ -21,3 +21,5 @@ module.exports = fp(fastifySwaggerUi, {
   name: '@fastify/swagger-ui',
   dependencies: ['@fastify/swagger']
 })
+module.exports.default = fastifySwaggerUi
+module.exports.fastifySwaggerUi = fastifySwaggerUi
