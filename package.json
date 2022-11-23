@@ -72,6 +72,9 @@
   "tsd": {
     "directory": "types"
   },
+  "pkg": {
+    "assets": ["static/**/*"]
+  },
   "publishConfig": {
     "access": "public"
   },
