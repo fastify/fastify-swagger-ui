@@ -43,7 +43,7 @@
   "homepage": "https://github.com/fastify/fastify-swagger-ui#readme",
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@fastify/basic-auth": "^4.0.0",
+    "@fastify/basic-auth": "^5.0.0",
     "@fastify/helmet": "^10.0.0",
     "@fastify/pre-commit": "^2.0.2",
     "@fastify/swagger": "^8.0.0",
