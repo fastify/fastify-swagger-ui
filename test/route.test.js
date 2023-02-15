@@ -304,7 +304,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-initializer.js'
     })
     t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+    t.equal(res.headers['content-type'], 'application/javascript; charset=utf-8')
     t.ok(res.payload.indexOf('resolveUrl') !== -1)
   }
 
