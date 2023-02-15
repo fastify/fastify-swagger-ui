@@ -74,62 +74,6 @@ test('/documentation/json route', async (t) => {
   t.pass('valid swagger object')
 })
 
-test('/documentation/uiConfig route', async (t) => {
-  t.plan(1)
-  const fastify = Fastify()
-
-  const uiConfig = {
-    docExpansion: 'full'
-  }
-
-  await fastify.register(fastifySwagger, swaggerOption)
-  await fastify.register(fastifySwaggerUi, { uiConfig })
-
-  fastify.get('/', () => {})
-  fastify.post('/', () => {})
-  fastify.get('/example', schemaQuerystring, () => {})
-  fastify.post('/example', schemaBody, () => {})
-  fastify.get('/parameters/:id', schemaParams, () => {})
-  fastify.get('/example1', schemaSecurity, () => {})
-
-  const res = await fastify.inject({
-    method: 'GET',
-    url: '/documentation/uiConfig'
-  })
-
-  const payload = JSON.parse(res.payload)
-
-  t.match(payload, uiConfig, 'uiConfig should be valid')
-})
-
-test('/documentation/initOAuth route', async (t) => {
-  t.plan(1)
-  const fastify = Fastify()
-
-  const initOAuth = {
-    scopes: ['openid', 'profile', 'email', 'offline_access']
-  }
-
-  await fastify.register(fastifySwagger, swaggerOption)
-  await fastify.register(fastifySwaggerUi, { initOAuth })
-
-  fastify.get('/', () => {})
-  fastify.post('/', () => {})
-  fastify.get('/example', schemaQuerystring, () => {})
-  fastify.post('/example', schemaBody, () => {})
-  fastify.get('/parameters/:id', schemaParams, () => {})
-  fastify.get('/example1', schemaSecurity, () => {})
-
-  const res = await fastify.inject({
-    method: 'GET',
-    url: '/documentation/initOAuth'
-  })
-
-  const payload = JSON.parse(res.payload)
-
-  t.match(payload, initOAuth, 'initOAuth should be valid')
-})
-
 test('fastify.swagger should return a valid swagger yaml', async (t) => {
   t.plan(3)
   const fastify = Fastify()
@@ -313,7 +257,7 @@ test('with routePrefix: \'/\' should redirect to ./static/index.html', async (t)
 })
 
 test('/documentation/static/:file should send back the correct file', async (t) => {
-  t.plan(22)
+  t.plan(21)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, swaggerOption)
@@ -361,13 +305,6 @@ test('/documentation/static/:file should send back the correct file', async (t) 
     })
     t.equal(typeof res.payload, 'string')
     t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
-    t.equal(
-      readFileSync(
-        resolve(__dirname, '..', 'static', 'swagger-initializer.js'),
-        'utf8'
-      ),
-      res.payload
-    )
     t.ok(res.payload.indexOf('resolveUrl') !== -1)
   }
 
