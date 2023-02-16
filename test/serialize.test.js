@@ -61,9 +61,10 @@ test('serialize', async (t) => {
   })
 
   t.test('symbol', t => {
-    t.plan(1)
+    t.plan(2)
 
     t.equal(serialize(Symbol('a')), 'Symbol("a")')
+    t.equal(serialize(Symbol()), 'Symbol()') // eslint-disable-line symbol-description
   })
 
   t.test('object', t => {
