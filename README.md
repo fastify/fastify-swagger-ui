@@ -108,7 +108,7 @@ await fastify.ready()
  | transformStaticCSP   | undefined        | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
  | transformSpecification     | undefined        | Synchronous function to transform the swagger document.                                                                   |
  | transformSpecificationClone| true             | Provide a deepcloned swaggerObject to transformSpecification                                                                    |
- | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                           |
+ | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Functions should be self contained, as variables outside the functions are not working. You can access the swagger-ui element with `ui` as it is assigned to `window.ui`.                                                                                                   |
  | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
  | logLevel             | info             | Allow to define route log level.                                                                                          |
 
