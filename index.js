@@ -10,6 +10,7 @@ function fastifySwaggerUi (fastify, opts, next) {
     uiConfig: opts.uiConfig || {},
     initOAuth: opts.initOAuth || {},
     hooks: opts.uiHooks,
+    theme: opts.theme || {},
     ...opts
   })
 
