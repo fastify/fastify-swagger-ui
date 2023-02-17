@@ -108,7 +108,7 @@ await fastify.ready()
  | transformStaticCSP   | undefined        | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
  | transformSpecification     | undefined        | Synchronous function to transform the swagger document.                                                                   |
  | transformSpecificationClone| true             | Provide a deepcloned swaggerObject to transformSpecification                                                                    |
- | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md). Must be literal values, see [#5710](https://github.com/swagger-api/swagger-ui/issues/5710).                                                                                                            |
+ | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                   |
  | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
  | logLevel             | info             | Allow to define route log level.                                                                                          |
 
@@ -120,6 +120,32 @@ The plugin will expose the documentation with the following APIs:
 | `'/documentation/yaml'` | The YAML object representing the API       |
 | `'/documentation/'`     | The swagger UI                             |
 | `'/documentation/*'`    | External files that you may use in `$ref`  |
+
+#### uiConfig
+
+To configure Swagger UI, you need to modify the `uiConfig` option.
+It's important to ensure that functions are self-contained. Keep in mind that
+you cannot modify the backend code within the `uiConfig` functions, as these
+functions are processed only by the browser. You can reference the Swagger UI
+element using `ui`, which is assigned to `window.ui`.
+
+##### Example
+```js
+const fastify = require('fastify')()
+
+await fastify.register(require('@fastify/swagger'))
+
+await fastify.register(require('@fastify/swagger-ui'), {
+  uiConfig: {
+    onComplete: function () {
+      alert('ui has type of ' + typeof ui) // 'ui has type of object'
+      alert('fastify has type of ' + typeof fastify) // 'fastify has type of undefined'
+      alert('window has type of ' + typeof window) // 'window has type of object'
+      alert('global has type of ' + typeof global) // 'global has type of undefined'
+    }
+  }
+})
+```
 
 #### transformSpecification
 
