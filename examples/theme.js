@@ -30,4 +30,5 @@ fastify.register(require('../index'), {
 
 fastify.listen({ port: 3000 }, (err) => {
   if (err) throw err
+  fastify.log.info('visit the documentation at http://127.0.0.1:3000/documentation/')
 })
