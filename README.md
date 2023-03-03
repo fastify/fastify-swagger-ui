@@ -110,6 +110,7 @@ await fastify.ready()
  | transformSpecificationClone| true             | Provide a deepcloned swaggerObject to transformSpecification                                                                    |
  | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                   |
  | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Routes/#options) interface.|
+ | theme                | {}               | Add custom JavaScript and CSS to the Swagger UI web page |
  | logLevel             | info             | Allow to define route log level.                                                                                          |
 
 The plugin will expose the documentation with the following APIs:
@@ -189,6 +190,37 @@ await fastify.register(require('@fastify/swagger-ui'), {
     clonedSwaggerObject.host = req.hostname
     swaggerLru.set(req.hostname, clonedSwaggerObject)
     return clonedSwaggerObject
+  }
+})
+```
+
+#### theme
+
+You can add custom JavaScript and CSS to the Swagger UI web page by using the theme option.
+
+##### Example
+```js
+const fastify = require('fastify')()
+
+fastify.register(require('@fastify/swagger'))
+
+await fastify.register(require('@fastify/swagger-ui'), {
+  theme: {
+    js: [
+      { filename: 'special.js', content: 'alert("client javascript")' }
+    ],
+    css: [
+      { filename: 'theme.css', content: '* { border: 1px red solid; }' }
+    ],
+    favicon: [
+      {
+        filename: 'favicon.png',
+        rel: 'icon',
+        sizes: '16x16',
+        type: 'image/png',
+        content: Buffer.from('iVBOR...', 'base64')
+      }
+    ]
   }
 })
 ```
