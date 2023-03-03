@@ -51,8 +51,16 @@ declare namespace fastifySwaggerUi {
      */
     uiHooks?: FastifySwaggerUiHooksOptions
 
+    theme?: FastifySwaggerUiTheme
+
     transformSpecification?: (swaggerObject: Readonly<Record<string, any>>, request: FastifyRequest, reply: FastifyReply) => Record<string, any>
     transformSpecificationClone?: boolean
+  }
+
+  type FastifySwaggerUiTheme = {
+    css?: { filename: string; content: string; }[];
+    js?: { filename: string; content: string; }[];
+    favicon: { filename: string; rel: string; type: string; sizes: string; content: string; }[];
   }
 
   type SupportedHTTPMethods = "get" | "put" | "post" | "delete" | "options" | "head" | "patch" | "trace";
