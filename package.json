@@ -55,7 +55,7 @@
     "standard": "^17.0.0",
     "swagger-ui-dist": "4.17.1",
     "tap": "^16.3.2",
-    "tsd": "^0.26.0"
+    "tsd": "^0.27.0"
   },
   "dependencies": {
     "@fastify/static": "^6.0.0",
