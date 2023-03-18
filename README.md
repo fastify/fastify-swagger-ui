@@ -225,6 +225,35 @@ await fastify.register(require('@fastify/swagger-ui'), {
 })
 ```
 
+#### Protect your documentation routes
+
+You can protect your documentation by configuring an authentication hook.
+Here is an example using the [`@fastify/basic-auth`](https://github.com/fastify/fastify-basic-auth) plugin:
+
+##### Example
+```js
+const fastify = require('fastify')()
+
+fastify.register(require('@fastify/swagger'))
+
+await fastify.register(require('@fastify/basic-auth'), {
+  validate (username, password, req, reply, done) {
+    if (username === 'admin' && password === 'admin') {
+      done()
+    } else {
+      done(new Error('You can not access'))
+    }
+  },
+  authenticate: true
+})
+
+await fastify.register(require('@fastify/swagger-ui', {
+  uiHooks: {
+    onRequest: fastify.basicAuth
+  }
+})
+```
+
 <a name="license"></a>
 ## License
 
