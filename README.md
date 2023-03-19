@@ -233,12 +233,29 @@ Here is an example using the [`@fastify/basic-auth`](https://github.com/fastify/
 ##### Example
 ```js
 const fastify = require('fastify')()
+const crypto = require('crypto')
 
 fastify.register(require('@fastify/swagger'))
 
+// perform constant-time comparison to prevent timing attacks
+function compare (a, b) {
+  a = Buffer.from(a)
+  b = Buffer.from(b)
+  if (a.length !== b.length) {
+    // Delay return with cryptographically secure timing check.
+    crypto.timingSafeEqual(a, a)
+    return false
+  }
+
+  return crypto.timingSafeEqual(a, b)
+}
+
 await fastify.register(require('@fastify/basic-auth'), {
   validate (username, password, req, reply, done) {
-    if (username === 'admin' && password === 'admin') {
+    let result = true
+    result = compare(username, validUsername) && result
+    result = compare(password, validPassword) && result
+    if (result) {
       done()
     } else {
       done(new Error('Access denied'))
