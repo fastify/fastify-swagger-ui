@@ -241,7 +241,7 @@ await fastify.register(require('@fastify/basic-auth'), {
     if (username === 'admin' && password === 'admin') {
       done()
     } else {
-      done(new Error('You can not access'))
+      done(new Error('Access denied'))
     }
   },
   authenticate: true
