@@ -199,6 +199,7 @@ await fastify.register(require('@fastify/swagger-ui'), {
 You can add custom JavaScript and CSS to the Swagger UI web page by using the theme option.
 
 ##### Example
+
 ```js
 const fastify = require('fastify')()
 
@@ -212,6 +213,32 @@ await fastify.register(require('@fastify/swagger-ui'), {
     css: [
       { filename: 'theme.css', content: '* { border: 1px red solid; }' }
     ],
+    favicon: [
+      {
+        filename: 'favicon.png',
+        rel: 'icon',
+        sizes: '16x16',
+        type: 'image/png',
+        content: Buffer.from('iVBOR...', 'base64')
+      }
+    ]
+  }
+})
+```
+
+You can add custom JavaScript and CSS to the Swagger UI web page by using the theme option.
+
+#### logo
+
+It's possible to override the logo displayed in the top bar by specifying:
+
+```
+await fastify.register(require('@fastify/swagger-ui'), {
+  logo: {
+    type: 'image/png',
+    content: Buffer.from('iVBOR...', 'base64')
+  },
+  theme: {
     favicon: [
       {
         filename: 'favicon.png',

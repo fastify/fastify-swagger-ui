@@ -76,3 +76,19 @@ test('/documentation/static/swagger-initializer.js should have configurable init
   t.equal(res.statusCode, 200)
   t.ok(res.payload.includes('ui.initOAuth({"clientId":"someId"})'))
 })
+
+test('customize logo', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
+
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, { logo: { type: 'image/png', content: 'foobar' } })
+
+  const res = await fastify.inject('/documentation/static/swagger-initializer.js')
+  t.equal(res.body.indexOf(Buffer.from('foobar').toString('base64')) > -1, true)
+})

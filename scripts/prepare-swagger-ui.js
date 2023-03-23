@@ -10,8 +10,6 @@ fse.emptyDirSync(resolve(`./${folderName}`))
 
 // since the original swagger-ui-dist folder contains non UI files
 const filesToCopy = [
-  'favicon-16x16.png',
-  'favicon-32x32.png',
   'index.html',
   'index.css',
   'oauth2-redirect.html',
@@ -26,6 +24,15 @@ const filesToCopy = [
 ]
 filesToCopy.forEach(filename => {
   fse.copySync(`${swaggerUiAssetPath}/${filename}`, resolve(`./static/${filename}`))
+})
+
+const overrides = [
+  'favicon-16x16.png',
+  'favicon-32x32.png',
+  'logo.svg'
+]
+overrides.forEach(filename => {
+  fse.copySync(`./${filename}`, resolve(`./static/${filename}`))
 })
 
 const sha = {
