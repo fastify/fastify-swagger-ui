@@ -8,6 +8,8 @@ A Fastify plugin for serving [Swagger UI](https://swagger.io/tools/swagger-ui/).
 
 Supports Fastify versions `4.x`.
 
+![Demo](./demo.png)
+
 <a name="install"></a>
 ## Install
 ```
