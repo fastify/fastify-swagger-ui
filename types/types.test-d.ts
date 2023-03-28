@@ -139,3 +139,10 @@ app.register(fastifySwaggerUi, {
     return swaggerObj
   }
 })
+
+app.register(fastifySwaggerUi, {
+  logo: {
+    type: 'image/png',
+    content: 'somethingsomething'
+  }
+})
