@@ -146,3 +146,17 @@ app.register(fastifySwaggerUi, {
     content: 'somethingsomething'
   }
 })
+
+app.register(fastifySwaggerUi, {
+  theme: {
+    favicon: [
+        {
+            filename: 'favicon-16x16.png',
+            rel: 'icon',
+            sizes: '16x16',
+            type: 'image/png',
+            content: Buffer.from('somethingsomething')
+        }
+    ],
+  },
+})
