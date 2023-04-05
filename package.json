@@ -1,6 +1,6 @@
 {
   "name": "@fastify/swagger-ui",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Serve Swagger-ui for Fastify",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -73,7 +73,9 @@
     "directory": "types"
   },
   "pkg": {
-    "assets": ["static/**/*"]
+    "assets": [
+      "static/**/*"
+    ]
   },
   "publishConfig": {
     "access": "public"
