@@ -215,3 +215,30 @@ test('swagger route returns additional theme - only favicon', async (t) => {
     t.equal(res.headers['content-type'], 'image/png')
   }
 })
+
+test('swagger route returns additional theme - only title', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
+
+  t.plan(3)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, {
+    theme: {
+      title: 'My custom title'
+    }
+  })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/static/index.html'
+  })
+
+  t.equal(typeof res.payload, 'string')
+  t.match(res.payload, /<title>My custom title<\/title>/)
+  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+})

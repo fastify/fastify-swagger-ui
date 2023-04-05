@@ -148,6 +148,10 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifySwaggerUi, {
+  theme: {}
+})
+
+app.register(fastifySwaggerUi, {
   theme: {
     favicon: [
         {
@@ -158,5 +162,11 @@ app.register(fastifySwaggerUi, {
             content: Buffer.from('somethingsomething')
         }
     ],
+  },
+})
+
+app.register(fastifySwaggerUi, {
+  theme: {
+    title: 'My Awesome Swagger Title'
   },
 })

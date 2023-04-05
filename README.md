@@ -209,6 +209,7 @@ fastify.register(require('@fastify/swagger'))
 
 await fastify.register(require('@fastify/swagger-ui'), {
   theme: {
+    title: 'My custom title',
     js: [
       { filename: 'special.js', content: 'alert("client javascript")' }
     ],
