@@ -60,9 +60,10 @@ declare namespace fastifySwaggerUi {
   }
 
   type FastifySwaggerUiTheme = {
+    title?: string;
     css?: { filename: string; content: string; }[];
     js?: { filename: string; content: string; }[];
-    favicon: { filename: string; rel: string; type: string; sizes: string; content: string | Buffer; }[];
+    favicon?: { filename: string; rel: string; type: string; sizes: string; content: string | Buffer; }[];
   }
 
   type FastifySwaggerUILogo = {
