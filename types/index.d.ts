@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import { FastifyPluginCallback, FastifyReply, FastifyRequest, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
 
 /**
