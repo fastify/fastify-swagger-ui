@@ -2,6 +2,7 @@
 
 const fp = require('fastify-plugin')
 const { readFile } = require('fs/promises')
+const path = require('path')
 
 async function fastifySwaggerUi (fastify, opts) {
   fastify.decorate('swaggerCSP', require('./static/csp.json'))
@@ -12,7 +13,7 @@ async function fastifySwaggerUi (fastify, opts) {
     initOAuth: opts.initOAuth || {},
     hooks: opts.uiHooks,
     theme: opts.theme || {},
-    logo: opts.logo || { type: 'image/svg+xml', content: await readFile(require.resolve('./static/logo.svg')) },
+    logo: opts.logo || { type: 'image/svg+xml', content: await readFile(path.join(__dirname, './static/logo.svg')) },
     ...opts
   })
 }
