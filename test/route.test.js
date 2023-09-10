@@ -15,8 +15,8 @@ const {
   swaggerOption
 } = require('../examples/options')
 
-const resolve = require('path').resolve
-const readFileSync = require('fs').readFileSync
+const resolve = require('node:path').resolve
+const readFileSync = require('node:fs').readFileSync
 
 const schemaParamsWithoutDesc = {
   schema: {

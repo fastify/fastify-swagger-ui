@@ -5,8 +5,8 @@ const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
 const yaml = require('yaml')
-const readFileSync = require('fs').readFileSync
-const resolve = require('path').resolve
+const readFileSync = require('node:fs').readFileSync
+const resolve = require('node:path').resolve
 
 test('swagger route returns yaml', async (t) => {
   const config = {

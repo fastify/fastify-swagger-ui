@@ -1,8 +1,8 @@
-const fs = require('fs')
+const fs = require('node:fs')
 const fse = require('fs-extra')
-const crypto = require('crypto')
+const crypto = require('node:crypto')
 const swaggerUiAssetPath = require('swagger-ui-dist').getAbsoluteFSPath()
-const resolve = require('path').resolve
+const resolve = require('node:path').resolve
 
 const folderName = 'static'
 
