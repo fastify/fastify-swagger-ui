@@ -1,8 +1,8 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const { readFile } = require('fs/promises')
-const path = require('path')
+const { readFile } = require('node:fs/promises')
+const path = require('node:path')
 
 async function fastifySwaggerUi (fastify, opts) {
   fastify.decorate('swaggerCSP', require('./static/csp.json'))

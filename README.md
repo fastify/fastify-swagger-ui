@@ -263,7 +263,7 @@ Here is an example using the [`@fastify/basic-auth`](https://github.com/fastify/
 ##### Example
 ```js
 const fastify = require('fastify')()
-const crypto = require('crypto')
+const crypto = require('node:crypto')
 
 fastify.register(require('@fastify/swagger'))
 
