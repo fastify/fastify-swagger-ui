@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('node:fs')
 const fse = require('fs-extra')
 const crypto = require('node:crypto')
