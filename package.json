@@ -3,6 +3,7 @@
   "version": "1.10.1",
   "description": "Serve Swagger-ui for Fastify",
   "main": "index.js",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
     "coverage": "npm run unit -- --coverage-report=lcovonly",
