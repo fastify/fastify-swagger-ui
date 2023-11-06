@@ -7,7 +7,7 @@ const fastifySwaggerUi = require('../index')
 const yaml = require('yaml')
 
 test('transformSpecification should modify the json', async (t) => {
-  t.plan(3)
+  t.plan(5)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, {
@@ -53,6 +53,8 @@ test('transformSpecification should modify the json', async (t) => {
   await fastify.register(fastifySwaggerUi, {
     transformSpecification: function (swaggerObject, req, reply) {
       t.not(swaggerObject, fastify.swagger())
+      t.ok(req)
+      t.ok(reply)
       swaggerObject.swagger = '2.1'
       return swaggerObject
     }
@@ -70,7 +72,7 @@ test('transformSpecification should modify the json', async (t) => {
 })
 
 test('transformSpecificationClone false should not deepclone fastify.swagger() /1', async (t) => {
-  t.plan(2)
+  t.plan(4)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, {
@@ -117,6 +119,8 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
     transformSpecificationClone: false,
     transformSpecification: function (swaggerObject, req, reply) {
       t.equal(swaggerObject, fastify.swagger())
+      t.ok(req)
+      t.ok(reply)
       return swaggerObject
     }
   })
@@ -132,7 +136,7 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
 })
 
 test('transformSpecification should modify the yaml', async (t) => {
-  t.plan(2)
+  t.plan(4)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, {
@@ -178,6 +182,8 @@ test('transformSpecification should modify the yaml', async (t) => {
   await fastify.register(fastifySwaggerUi, {
     transformSpecification: function (swaggerObject, req, reply) {
       swaggerObject.swagger = '2.1'
+      t.ok(req)
+      t.ok(reply)
       return swaggerObject
     }
   })
@@ -195,7 +201,7 @@ test('transformSpecification should modify the yaml', async (t) => {
 })
 
 test('transformSpecificationClone false should not deepclone fastify.swagger() /2', async (t) => {
-  t.plan(2)
+  t.plan(4)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, {
@@ -242,6 +248,8 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
     transformSpecificationClone: false,
     transformSpecification: function (swaggerObject, req, reply) {
       t.equal(swaggerObject, fastify.swagger())
+      t.ok(req)
+      t.ok(reply)
       return swaggerObject
     }
   })
