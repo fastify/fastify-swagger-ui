@@ -31,7 +31,7 @@ test.describe('Check customizations', () => {
     await page.goto(URL_FAVICON)
 
     const faviconId = await (await page.waitForSelector('svg')).getAttribute('id')
-    expect(faviconId).toBe('example-logo')
+    expect(faviconId).toBe('example-logo') // it is included in the svg file
   })
 
   test('Check custom logo', async ({ page }) => {
@@ -42,6 +42,6 @@ test.describe('Check customizations', () => {
     await page.goto(logoSrc)
 
     const logoId = await (await page.waitForSelector('svg')).getAttribute('id')
-    expect(logoId).toBe('example-logo')
+    expect(logoId).toBe('example-logo') // it is included in the svg file
   })
 })

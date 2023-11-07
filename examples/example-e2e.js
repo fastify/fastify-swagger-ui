@@ -16,11 +16,6 @@ fastify.register(require('@fastify/swagger'), {
   }
 })
 
-readFileSync(
-  resolve(__dirname, '..', 'static', 'logo.svg'),
-  'utf8'
-)
-
 fastify.register(require('../index'), {
   theme: {
     js: [
@@ -45,7 +40,7 @@ fastify.register(require('../index'), {
   }
 })
 
-fastify.listen({ port: 3000 }, (err) => {
+fastify.listen({ port: process.env.PORT }, (err) => {
   if (err) throw err
-  fastify.log.info('visit the documentation at http://127.0.0.1:3000/documentation/')
+  fastify.log.info(`visit the documentation at http://127.0.0.1:${process.env.PORT}/documentation/`)
 })

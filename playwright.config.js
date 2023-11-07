@@ -1,5 +1,7 @@
 const { defineConfig, devices } = require('@playwright/test')
 
+const PORT = 3000
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -11,7 +13,7 @@ module.exports = defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://127.0.0.1:3000/documentation',
+    baseURL: `http://127.0.0.1:${PORT}/documentation`,
     trace: 'on-first-retry'
   },
   projects: [
@@ -21,8 +23,8 @@ module.exports = defineConfig({
     }
   ],
   webServer: {
-    command: 'npm run test:e2e:command',
-    url: 'http://127.0.0.1:3000/documentation',
+    command: `PORT=${PORT} npm run test:e2e:command`,
+    url: `http://127.0.0.1:${PORT}/documentation`,
     reuseExistingServer: !process.env.CI
   }
 })
