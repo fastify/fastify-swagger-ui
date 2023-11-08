@@ -1,3 +1,5 @@
+'use strict'
+
 const { defineConfig, devices } = require('@playwright/test')
 
 const PORT = 3000
