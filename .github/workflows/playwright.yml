@@ -6,8 +6,12 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    timeout-minutes: 60
+
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
