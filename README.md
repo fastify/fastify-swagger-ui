@@ -301,6 +301,10 @@ await fastify.register(require('@fastify/swagger-ui', {
 })
 ```
 
+#### Rendering models at the bottom of the page
+
+To ensure that models are correctly rendered at the bottom of the Swagger UI page, it's important to define your schemas using $refs through [fastify.addSchema](https://fastify.dev/docs/latest/Reference/Validation-and-Serialization/#adding-a-shared-schema). Directly embedding JSON schemas within the schema property of your route definitions in Fastify may lead to them not being displayed in Swagger UI.
+
 <a name="license"></a>
 ## License
 
