@@ -16,8 +16,12 @@ on:
       - '*.md'
 
 jobs:
+  e2e:
+    uses: ./.github/workflows/playwright.yml
+
   test:
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
+    needs: e2e
     with:
       license-check: true
       lint: true
