@@ -307,15 +307,17 @@ To ensure that models are correctly rendered at the bottom of the Swagger UI pag
 
 #### validatorUrl
 
-[SwaggerUI](https://github.com/swagger-api/swagger-ui/) automatically validates the given sepcification using their online validator.
-To disable this behavior (or use your own) you can pass the [`validatorUrl`](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md) option
+[SwaggerUI](https://github.com/swagger-api/swagger-ui/) can automatically validate the given sepcification using an online validator.
+To enable this behavior you can pass the [`validatorUrl`](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md) option
 to this plugin which will be forwarded to SwaggerUI.
 
 ```js
 fastify.register('@fastify/swagger-ui', {
-  validatorUrl: false // to disable
+  validatorUrl: 'https://validator.swagger.io/validator'
 })
 ```
+
+Note that this behavior is disabled by default in `@fastify/swagger-ui`.
 
 <a name="license"></a>
 ## License
