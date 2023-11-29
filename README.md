@@ -305,6 +305,18 @@ await fastify.register(require('@fastify/swagger-ui', {
 
 To ensure that models are correctly rendered at the bottom of the Swagger UI page, it's important to define your schemas using $refs through [fastify.addSchema](https://fastify.dev/docs/latest/Reference/Validation-and-Serialization/#adding-a-shared-schema). Directly embedding JSON schemas within the schema property of your route definitions in Fastify may lead to them not being displayed in Swagger UI.
 
+#### validatorUrl
+
+[SwaggerUI](https://github.com/swagger-api/swagger-ui/) automatically validates the given sepcification using their online validator.
+To disable this behavior (or use your own) you can pass the [`validatorUrl`](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md) option
+to this plugin which will be forwarded to SwaggerUI.
+
+```js
+fastify.register('@fastify/swagger-ui', {
+  validatorUrl: false // to disable
+})
+```
+
 <a name="license"></a>
 ## License
 

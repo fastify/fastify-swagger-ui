@@ -25,7 +25,9 @@ fastify.register(require('@fastify/swagger'), {
   hideUntagged: true
 })
 
-fastify.register(require('../index'))
+fastify.register(require('../index'), {
+  validatorUrl: false
+})
 
 fastify.register(async function (fastify) {
   fastify.put('/some-route/:id', {
@@ -113,6 +115,6 @@ fastify.register(async function (fastify) {
   }, (req, reply) => { reply.send({ hello: `Hello ${req.body.hello}` }) })
 })
 
-fastify.listen({ port: 3000 }, err => {
+fastify.listen({ port: 3000, hostname: '0.0.0.0' }, err => {
   if (err) throw err
 })
