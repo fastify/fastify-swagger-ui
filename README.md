@@ -319,6 +319,51 @@ fastify.register('@fastify/swagger-ui', {
 
 Note that this behavior is disabled by default in `@fastify/swagger-ui`.
 
+### Bundling
+
+If you want to bundle Swagger UI with your application, you need to copy the swagger-ui static files to your server yourself and set the `baseDir` option to point to your folder.
+
+<details>
+<summary>Copy files with esbuild</summary>
+
+```js
+import { build } from 'esbuild'
+import { copy } from 'esbuild-plugin-copy'
+
+await build({
+  // ...
+  plugins: [
+    copy({
+      resolveFrom: 'cwd',
+      assets: {
+        from: ['node_modules/@fastify/swagger-ui/static/*'],
+        to: ['dist/static'],
+      },
+    }),
+  ],
+})
+```
+
+</details>
+
+<details>
+<summary>Copy files with docker</summary>
+
+```Dockerfile
+COPY ./node_modules/@fastify/swagger-ui/static /app/static
+```
+
+</details>
+
+#### Configure Swagger UI to use a custom baseDir
+Set the `baseDir` option to point to your folder.
+
+```js
+await fastify.register(require('@fastify/swagger-ui'), {
+  baseDir: isDev ? undefined : path.resolve('static'),
+})
+```
+
 <a name="license"></a>
 ## License
 
