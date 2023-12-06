@@ -373,6 +373,33 @@ test('/documentation/static/:file should send back the correct file', async (t) 
   }
 })
 
+test('/documentation/static/:file should send back file from baseDir', async (t) => {
+  t.plan(2)
+  const fastify = Fastify()
+  
+  const uiConfig = {
+    baseDir: resolve(__dirname, '..', 'examples', 'static')
+  }
+
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, uiConfig)
+
+  {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation/static/example-logo.svg'
+    })
+    t.equal(res.statusCode, 200)
+    t.equal(
+      res.payload,
+      readFileSync(
+        resolve(__dirname, '..', 'examples', 'static', 'example-logo.svg'),
+        'utf8'
+      )
+    )
+  }
+})
+
 test('/documentation/static/:file 404', async (t) => {
   t.plan(2)
   const fastify = Fastify()
