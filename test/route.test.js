@@ -376,7 +376,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
 test('/documentation/static/:file should send back file from baseDir', async (t) => {
   t.plan(2)
   const fastify = Fastify()
-  
+
   const uiConfig = {
     baseDir: resolve(__dirname, '..', 'examples', 'static')
   }
