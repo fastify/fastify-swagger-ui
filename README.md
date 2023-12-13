@@ -321,8 +321,7 @@ Note that this behavior is disabled by default in `@fastify/swagger-ui`.
 
 ### Bundling
 
-If you want to bundle Swagger UI with your application, you need to copy the swagger-ui static files to your server yourself and set the `baseDir` option to point to your folder.
-
+To bundle Swagger UI with your application, the swagger-ui static files need to be copied to the server and the `baseDir` option set to point to the file directory.
 <details>
 <summary>Copy files with esbuild</summary>
 
