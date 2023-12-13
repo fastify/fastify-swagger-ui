@@ -170,3 +170,11 @@ app.register(fastifySwaggerUi, {
     title: 'My Awesome Swagger Title'
   },
 })
+
+app.register(fastifySwaggerUi, {
+  validatorUrl: false
+})
+
+app.register(fastifySwaggerUi, {
+  validatorUrl: 'https://validator.swagger.io/validator'
+})
