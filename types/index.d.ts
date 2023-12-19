@@ -59,6 +59,13 @@ declare namespace fastifySwaggerUi {
 
     transformSpecification?: (swaggerObject: Readonly<Record<string, any>>, request: FastifyRequest, reply: FastifyReply) => Record<string, any>
     transformSpecificationClone?: boolean
+
+    /**
+     * Use this parameter to set a validator URL
+     * 
+     * @default false
+     */
+    validatorUrl?: string | false
   }
 
   type FastifySwaggerUiTheme = {
