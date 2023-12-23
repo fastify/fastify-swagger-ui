@@ -18,7 +18,7 @@ test('fastify will response swagger csp', async (t) => {
 
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi)
-  fastify.register(fastifyHelmet, instance => {
+  await fastify.register(fastifyHelmet, instance => {
     return {
       contentSecurityPolicy: {
         directives: {
