@@ -132,7 +132,7 @@ test('/documentation/:file should serve static file from the location of main sp
   }
 
   t.plan(4)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
@@ -180,7 +180,7 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
   }
 
   t.plan(1)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
   fastify.setNotFoundHandler((request, reply) => {
@@ -209,7 +209,7 @@ test('/documentation/:file should be served from custom location', async (t) => 
   }
 
   t.plan(2)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
@@ -239,7 +239,7 @@ test('/documentation/:file should be served from custom location with trailing s
   }
 
   t.plan(2)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
