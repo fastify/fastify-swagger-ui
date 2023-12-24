@@ -192,7 +192,7 @@ test('/v1/foobar should redirect to ./foobar/static/index.html - in plugin', asy
   t.plan(3)
   const fastify = Fastify()
 
-  await fastify.register(async function (fastify, options) {
+  fastify.register(async function (fastify, options) {
     await fastify.register(fastifySwagger, swaggerOption)
     await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar' })
 
@@ -217,7 +217,7 @@ test('/v1/foobar/ should redirect to ./static/index.html - in plugin', async (t)
   t.plan(3)
   const fastify = Fastify()
 
-  await fastify.register(async function (fastify, options) {
+  fastify.register(async function (fastify, options) {
     await fastify.register(fastifySwagger, swaggerOption)
     await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar' })
 
