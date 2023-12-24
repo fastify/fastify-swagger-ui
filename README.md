@@ -205,7 +205,7 @@ You can add custom JavaScript and CSS to the Swagger UI web page by using the th
 ```js
 const fastify = require('fastify')()
 
-fastify.register(require('@fastify/swagger'))
+await fastify.register(require('@fastify/swagger'))
 
 await fastify.register(require('@fastify/swagger-ui'), {
   theme: {
@@ -265,7 +265,7 @@ Here is an example using the [`@fastify/basic-auth`](https://github.com/fastify/
 const fastify = require('fastify')()
 const crypto = require('node:crypto')
 
-fastify.register(require('@fastify/swagger'))
+await fastify.register(require('@fastify/swagger'))
 
 // perform constant-time comparison to prevent timing attacks
 function compare (a, b) {
@@ -312,7 +312,7 @@ To enable this behavior you can pass the [`validatorUrl`](https://github.com/swa
 to this plugin which will be forwarded to SwaggerUI.
 
 ```js
-fastify.register('@fastify/swagger-ui', {
+await fastify.register('@fastify/swagger-ui', {
   validatorUrl: 'https://validator.swagger.io/validator'
 })
 ```
