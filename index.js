@@ -7,7 +7,7 @@ const path = require('node:path')
 async function fastifySwaggerUi (fastify, opts) {
   fastify.decorate('swaggerCSP', require('./static/csp.json'))
 
-  fastify.register(require('./lib/routes'), {
+  await fastify.register(require('./lib/routes'), {
     prefix: opts.routePrefix || '/documentation',
     uiConfig: opts.uiConfig || {},
     initOAuth: opts.initOAuth || {},
