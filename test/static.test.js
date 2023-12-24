@@ -1,14 +1,22 @@
 'use strict'
 
+const fs = require('node:fs')
+const resolve = require('node:path').resolve
 const { test } = require('tap')
+const yaml = require('yaml')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
-const yaml = require('yaml')
-const readFileSync = require('node:fs').readFileSync
-const resolve = require('node:path').resolve
+
+const oauthRedirectHtml = fs.readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8')
+const exampleStaticSpecificationYaml = fs.readFileSync(
+  resolve(__dirname, '..', 'examples', 'example-static-specification.yaml'),
+  'utf8'
+)
 
 test('swagger route returns yaml', async (t) => {
+  t.plan(3)
+
   const config = {
     mode: 'static',
     specification: {
@@ -16,7 +24,6 @@ test('swagger route returns yaml', async (t) => {
     }
   }
 
-  t.plan(3)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -34,6 +41,8 @@ test('swagger route returns yaml', async (t) => {
 })
 
 test('swagger route returns json', async (t) => {
+  t.plan(3)
+
   const config = {
     mode: 'static',
     specification: {
@@ -41,7 +50,6 @@ test('swagger route returns json', async (t) => {
     }
   }
 
-  t.plan(3)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -59,6 +67,8 @@ test('swagger route returns json', async (t) => {
 })
 
 test('postProcessor works, swagger route returns updated yaml', async (t) => {
+  t.plan(4)
+
   const config = {
     mode: 'static',
     specification: {
@@ -70,7 +80,6 @@ test('postProcessor works, swagger route returns updated yaml', async (t) => {
     }
   }
 
-  t.plan(4)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -89,6 +98,8 @@ test('postProcessor works, swagger route returns updated yaml', async (t) => {
 })
 
 test('swagger route returns explicitly passed doc', async (t) => {
+  t.plan(2)
+
   const document = {
     info: {
       title: 'Test swagger',
@@ -104,7 +115,6 @@ test('swagger route returns explicitly passed doc', async (t) => {
     }
   }
 
-  t.plan(2)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
 
@@ -120,6 +130,8 @@ test('swagger route returns explicitly passed doc', async (t) => {
 })
 
 test('/documentation/:file should serve static file from the location of main specification file', async (t) => {
+  t.plan(4)
+
   const config = {
     mode: 'static',
     specification: {
@@ -131,8 +143,7 @@ test('/documentation/:file should serve static file from the location of main sp
     baseDir: resolve(__dirname, '..', 'examples')
   }
 
-  t.plan(4)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
@@ -152,13 +163,7 @@ test('/documentation/:file should serve static file from the location of main sp
     })
 
     t.equal(res.statusCode, 200)
-    t.equal(
-      readFileSync(
-        resolve(__dirname, '..', 'examples', 'example-static-specification.yaml'),
-        'utf8'
-      ),
-      res.payload
-    )
+    t.equal(exampleStaticSpecificationYaml, res.payload)
   }
 
   {
@@ -172,6 +177,8 @@ test('/documentation/:file should serve static file from the location of main sp
 })
 
 test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) => {
+  t.plan(1)
+
   const config = {
     mode: 'static',
     specification: {
@@ -179,8 +186,7 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
     }
   }
 
-  t.plan(1)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
   fastify.setNotFoundHandler((request, reply) => {
@@ -196,6 +202,8 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
 })
 
 test('/documentation/:file should be served from custom location', async (t) => {
+  t.plan(2)
+
   const config = {
     mode: 'static',
     specification: {
@@ -208,8 +216,7 @@ test('/documentation/:file should be served from custom location', async (t) => 
     baseDir: resolve(__dirname, '..', 'static')
   }
 
-  t.plan(2)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
@@ -218,15 +225,13 @@ test('/documentation/:file should be served from custom location', async (t) => 
     url: '/documentation/oauth2-redirect.html'
   })
 
-  const fileContent = readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8')
   t.equal(res.statusCode, 200)
-  t.equal(
-    fileContent,
-    res.payload
-  )
+  t.equal(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/:file should be served from custom location with trailing slash(es)', async (t) => {
+  t.plan(2)
+
   const config = {
     mode: 'static',
     specification: {
@@ -238,8 +243,7 @@ test('/documentation/:file should be served from custom location with trailing s
     baseDir: resolve(__dirname, '..', 'static') + '/'
   }
 
-  t.plan(2)
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi, uiConfig)
 
@@ -249,13 +253,12 @@ test('/documentation/:file should be served from custom location with trailing s
   })
 
   t.equal(res.statusCode, 200)
-  t.equal(
-    readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8'),
-    res.payload
-  )
+  t.equal(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/yaml returns cache.swaggerString on second request in static mode', async (t) => {
+  t.plan(6)
+
   const config = {
     mode: 'static',
     specification: {
@@ -263,7 +266,6 @@ test('/documentation/yaml returns cache.swaggerString on second request in stati
     }
   }
 
-  t.plan(6)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -294,6 +296,8 @@ test('/documentation/yaml returns cache.swaggerString on second request in stati
 })
 
 test('/documentation/json returns cache.swaggerObject on second request in static mode', async (t) => {
+  t.plan(6)
+
   const config = {
     mode: 'static',
     specification: {
@@ -301,7 +305,6 @@ test('/documentation/json returns cache.swaggerObject on second request in stati
     }
   }
 
-  t.plan(6)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -330,13 +333,14 @@ test('/documentation/json returns cache.swaggerObject on second request in stati
 })
 
 test('/documentation/yaml returns cache.swaggerString on second request in dynamic mode', async (t) => {
+  t.plan(6)
+
   const config = {
     specification: {
       path: './examples/example-static-specification.yaml'
     }
   }
 
-  t.plan(6)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
@@ -367,13 +371,14 @@ test('/documentation/yaml returns cache.swaggerString on second request in dynam
 })
 
 test('/documentation/json returns cache.swaggerObject on second request in dynamic mode', async (t) => {
+  t.plan(6)
+
   const config = {
     specification: {
       path: './examples/example-static-specification.json'
     }
   }
 
-  t.plan(6)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)

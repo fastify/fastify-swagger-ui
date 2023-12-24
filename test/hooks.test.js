@@ -126,17 +126,15 @@ test('catch all added schema', async t => {
 
   fastify.addSchema({ $id: 'Root', type: 'object', properties: {} })
 
-  fastify.register(function (instance, _, done) {
+  fastify.register(async function (instance) {
     instance.addSchema({ $id: 'Instance', type: 'object', properties: {} })
 
-    instance.register(function (instance, _, done) {
+    await instance.register(async function (instance) {
       instance.addSchema({ $id: 'Sub-Instance', type: 'object', properties: {} })
-      done()
     })
-    done()
   })
 
   await fastify.ready()
-  const openapi = await fastify.swagger()
+  const openapi = fastify.swagger()
   t.same(Object.keys(openapi.components.schemas), ['Root', 'Instance', 'Sub-Instance'])
 })

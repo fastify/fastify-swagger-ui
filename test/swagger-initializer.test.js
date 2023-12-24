@@ -8,7 +8,7 @@ const fastifySwaggerUi = require('../index')
 test('/documentation/static/swagger-initializer.js should have default uiConfig', async (t) => {
   t.plan(2)
 
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi)
 
@@ -24,7 +24,7 @@ test('/documentation/static/swagger-initializer.js should have default uiConfig'
 test('/documentation/static/swagger-initializer.js should have configurable uiConfig', async (t) => {
   t.plan(2)
 
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger)
 
   await fastify.register(fastifySwaggerUi, {
@@ -44,7 +44,7 @@ test('/documentation/static/swagger-initializer.js should have configurable uiCo
 test('/documentation/static/swagger-initializer.js should have default initOAuth', async (t) => {
   t.plan(2)
 
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi)
 
@@ -60,7 +60,7 @@ test('/documentation/static/swagger-initializer.js should have default initOAuth
 test('/documentation/static/swagger-initializer.js should have configurable initOAuth', async (t) => {
   t.plan(2)
 
-  const fastify = new Fastify()
+  const fastify = Fastify()
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi, {
     initOAuth: {

@@ -18,15 +18,16 @@ test('fastify will response swagger csp', async (t) => {
 
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi)
-  fastify.register(fastifyHelmet, instance => {
-    return {
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:', 'validator.swagger.io'],
-          scriptSrc: ["'self'"].concat(instance.swaggerCSP.script),
-          styleSrc: ["'self'", 'https:'].concat(instance.swaggerCSP.style)
-        }
+
+  const scriptSrc = ["'self'"].concat(fastify.swaggerCSP.script)
+  const styleSrc = ["'self'", 'https:'].concat(fastify.swaggerCSP.style)
+  await fastify.register(fastifyHelmet, {
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'validator.swagger.io'],
+        scriptSrc,
+        styleSrc
       }
     }
   })
