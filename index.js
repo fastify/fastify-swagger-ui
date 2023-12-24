@@ -1,11 +1,14 @@
 'use strict'
 
-const fp = require('fastify-plugin')
-const { readFile } = require('node:fs/promises')
+const fsPromises = require('node:fs/promises')
 const path = require('node:path')
+const fp = require('fastify-plugin')
+const csp = require('./static/csp.json')
 
 async function fastifySwaggerUi (fastify, opts) {
-  fastify.decorate('swaggerCSP', require('./static/csp.json'))
+  const logoContent = await fsPromises.readFile(path.join(__dirname, './static/logo.svg'))
+
+  fastify.decorate('swaggerCSP', csp)
 
   await fastify.register(require('./lib/routes'), {
     prefix: opts.routePrefix || '/documentation',
@@ -13,7 +16,7 @@ async function fastifySwaggerUi (fastify, opts) {
     initOAuth: opts.initOAuth || {},
     hooks: opts.uiHooks,
     theme: opts.theme || {},
-    logo: opts.logo || { type: 'image/svg+xml', content: await readFile(path.join(__dirname, './static/logo.svg')) },
+    logo: opts.logo || { type: 'image/svg+xml', content: logoContent },
     ...opts
   })
 }
