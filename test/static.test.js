@@ -1,12 +1,18 @@
 'use strict'
 
+const fs = require('node:fs')
+const resolve = require('node:path').resolve
 const { test } = require('tap')
+const yaml = require('yaml')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
-const yaml = require('yaml')
-const readFileSync = require('node:fs').readFileSync
-const resolve = require('node:path').resolve
+
+const oauthRedirectHtml = fs.readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8')
+const exampleStaticSpecificationYaml = fs.readFileSync(
+  resolve(__dirname, '..', 'examples', 'example-static-specification.yaml'),
+  'utf8'
+)
 
 test('swagger route returns yaml', async (t) => {
   t.plan(3)
@@ -157,13 +163,7 @@ test('/documentation/:file should serve static file from the location of main sp
     })
 
     t.equal(res.statusCode, 200)
-    t.equal(
-      readFileSync(
-        resolve(__dirname, '..', 'examples', 'example-static-specification.yaml'),
-        'utf8'
-      ),
-      res.payload
-    )
+    t.equal(exampleStaticSpecificationYaml, res.payload)
   }
 
   {
@@ -225,12 +225,8 @@ test('/documentation/:file should be served from custom location', async (t) => 
     url: '/documentation/oauth2-redirect.html'
   })
 
-  const fileContent = readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8')
   t.equal(res.statusCode, 200)
-  t.equal(
-    fileContent,
-    res.payload
-  )
+  t.equal(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/:file should be served from custom location with trailing slash(es)', async (t) => {
@@ -257,10 +253,7 @@ test('/documentation/:file should be served from custom location with trailing s
   })
 
   t.equal(res.statusCode, 200)
-  t.equal(
-    readFileSync(resolve(__dirname, '..', 'static', 'oauth2-redirect.html'), 'utf8'),
-    res.payload
-  )
+  t.equal(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/yaml returns cache.swaggerString on second request in static mode', async (t) => {
