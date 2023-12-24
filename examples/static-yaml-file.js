@@ -1,16 +1,21 @@
 'use strict'
 
-const fastify = require('fastify')({ logger: true })
+const Fastify = require('fastify')
 
-fastify.register(require('@fastify/swagger'), {
-  mode: 'static',
-  specification: {
-    path: './examples/example-static-specification.yaml'
-  }
-})
+  ; (async () => {
+  const fastify = Fastify({ logger: true })
 
-fastify.register(require('../index'))
+  await fastify.register(require('@fastify/swagger'), {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  })
 
-fastify.listen({ port: 3000 }, (err) => {
-  if (err) throw err
-})
+  await fastify.register(require('../index'))
+
+  fastify.listen({ port: 3000 }, (err, addr) => {
+    if (err) throw err
+    fastify.log.info(`Visit the documentation at ${addr}/documentation/`)
+  })
+})()
