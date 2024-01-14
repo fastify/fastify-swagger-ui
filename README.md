@@ -111,7 +111,7 @@ await fastify.ready()
  | transformSpecification     | undefined        | Synchronous function to transform the swagger document.                                                                   |
  | transformSpecificationClone| true             | Provide a deepcloned swaggerObject to transformSpecification                                                                    |
  | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                   |
- | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.io/docs/latest/Reference/Routes/#routes-options) interface.|
+ | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://www.fastify.dev/docs/latest/Reference/Routes/#routes-options) interface.|
  | theme                | {}               | Add custom JavaScript and CSS to the Swagger UI web page |
  | logLevel             | info             | Allow to define route log level.                                                                                          |
 
