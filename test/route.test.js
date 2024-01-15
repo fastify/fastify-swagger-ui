@@ -495,6 +495,19 @@ test('/documentation/ should redirect to ./static/index.html', async (t) => {
   t.equal(res.headers.location, './static/index.html')
 })
 
+test('/documentation/* should not return module files when baseDir not set', async (t) => {
+  t.plan(1)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi)
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/README.md'
+  })
+  t.equal(res.statusCode, 404)
+})
+
 test('should return silent log level of route /documentation', async (t) => {
   const fastify = Fastify()
 
