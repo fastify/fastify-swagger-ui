@@ -5,7 +5,7 @@
  * Make sure to inspect the output below.  Do not ignore changes!
  */
 'use strict'
-exports['test/static.test.js TAP postProcessor works, swagger route returns updated yaml > must match snapshot 1'] = `
+exports['test/static.test.js > TAP > postProcessor works, swagger route returns updated yaml > must match snapshot 1'] = `
 openapi: 3.0.0
 info:
   description: Test swagger specification
@@ -40,7 +40,7 @@ paths:
 
 `
 
-exports['test/static.test.js TAP swagger route returns explicitly passed doc > must match snapshot 1'] = `
+exports['test/static.test.js > TAP > swagger route returns explicitly passed doc > must match snapshot 1'] = `
 {
   "message": "Route GET:/documentation/json not found",
   "error": "Not Found",
