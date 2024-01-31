@@ -6,8 +6,6 @@
 
 A Fastify plugin for serving [Swagger UI](https://swagger.io/tools/swagger-ui/).
 
-Supports Fastify versions `4.x`.
-
 ![Demo](https://user-images.githubusercontent.com/52195/228162405-c85ad0d1-900d-442a-b712-7108d98d621f.png)
 
 <a name="install"></a>
@@ -15,6 +13,13 @@ Supports Fastify versions `4.x`.
 ```
 npm i @fastify/swagger-ui
 ```
+
+### Compatibility
+
+| Plugin version | Fastify version | Swagger Plugin Version |
+| -------------- | --------------- | ---------------------- |
+| `^2.0.0`       | `^4.0.0`        | `^8.0.0`               |
+| `^1.0.0`       | `^4.0.0`        | `^8.0.0`               |
 
 <a name="usage"></a>
 ## Usage
