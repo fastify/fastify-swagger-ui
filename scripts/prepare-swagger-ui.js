@@ -16,16 +16,21 @@ const filesToCopy = [
   'index.css',
   'oauth2-redirect.html',
   'swagger-ui-bundle.js',
-  'swagger-ui-bundle.js.map',
   'swagger-ui-standalone-preset.js',
-  'swagger-ui-standalone-preset.js.map',
   'swagger-ui.css',
-  'swagger-ui.css.map',
-  'swagger-ui.js',
-  'swagger-ui.js.map'
+  'swagger-ui.js'
 ]
 filesToCopy.forEach(filename => {
-  fse.copySync(`${swaggerUiAssetPath}/${filename}`, resolve(`./static/${filename}`))
+  fse.ensureFileSync(resolve(`./static/${filename}`))
+  const readableStream = fs.createReadStream(`${swaggerUiAssetPath}/${filename}`, 'utf8')
+  const writableStream = fs.createWriteStream(resolve(`./static/${filename}`))
+  // Matches sourceMappingURL comments in .js and .css files
+  const sourceMapRegex = new RegExp(String.raw`\/.# sourceMappingURL=${filename}.map(\*\/)?$`)
+
+  readableStream.on('data', (chunk) => {
+    // Copy file while removing sourceMappingURL comments
+    writableStream.write(chunk.replace(sourceMapRegex, ''))
+  })
 })
 
 const overrides = [
