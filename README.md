@@ -240,7 +240,7 @@ You can add custom JavaScript and CSS to the Swagger UI web page by using the th
 
 It's possible to override the logo displayed in the top bar by specifying:
 
-```
+```js
 await fastify.register(require('@fastify/swagger-ui'), {
   logo: {
     type: 'image/png',
