@@ -5,10 +5,15 @@ const path = require('node:path')
 const fp = require('fastify-plugin')
 const csp = require('./static/csp.json')
 
-async function fastifySwaggerUi (fastify, opts) {
-  const logoContent = await fsPromises.readFile(path.join(__dirname, './static/logo.svg'))
-
+async function fastifySwaggerUi(fastify, opts) {
   fastify.decorate('swaggerCSP', csp)
+
+  //if no logo is provided, read default static logo
+  let logoContent = opts.logo;
+  if (logoContent == null) {
+    const bufferLogoContent = await fsPromises.readFile(path.join(__dirname, './static/logo.svg'));
+    logoContent = { type: 'image/svg+xml', content: bufferLogoContent };
+  }
 
   await fastify.register(require('./lib/routes'), {
     prefix: opts.routePrefix || '/documentation',
@@ -16,7 +21,7 @@ async function fastifySwaggerUi (fastify, opts) {
     initOAuth: opts.initOAuth || {},
     hooks: opts.uiHooks,
     theme: opts.theme || {},
-    logo: opts.logo || { type: 'image/svg+xml', content: logoContent },
+    logo: logoContent,
     ...opts
   })
 }
