@@ -20,7 +20,7 @@ test('swagger route does not return additional theme', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')
@@ -63,7 +63,7 @@ test('swagger route returns additional theme', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')
@@ -119,7 +119,7 @@ test('swagger route returns additional theme - only js', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')
@@ -156,7 +156,7 @@ test('swagger route returns additional theme - only css', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')
@@ -199,7 +199,7 @@ test('swagger route returns additional theme - only favicon', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')
@@ -235,7 +235,7 @@ test('swagger route returns additional theme - only title', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
 
   t.equal(typeof res.payload, 'string')

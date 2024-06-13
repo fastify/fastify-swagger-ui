@@ -31,7 +31,7 @@ test('staticCSP = undefined', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/documentation/static/index.html'
+    url: '/documentation'
   })
   t.equal(res.statusCode, 200)
   t.equal(typeof res.headers['content-security-policy'], 'undefined')
@@ -57,7 +57,7 @@ test('staticCSP = true', async (t) => {
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/static/index.html'
+      url: '/documentation'
     })
     t.equal(res.statusCode, 200)
     t.equal(res.headers['content-security-policy'], `default-src 'self'; base-uri 'self'; font-src 'self' https: data:; frame-ancestors 'self'; img-src 'self' data: validator.swagger.io; object-src 'none'; script-src 'self' ${csp.script.join(' ')}; script-src-attr 'none'; style-src 'self' https: ${csp.style.join(' ')}; upgrade-insecure-requests;`)
@@ -93,7 +93,7 @@ test('staticCSP = "default-src \'self\';"', async (t) => {
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/static/index.html'
+      url: '/documentation'
     })
     t.equal(res.statusCode, 200)
     t.equal(res.headers['content-security-policy'], "default-src 'self';")
@@ -132,7 +132,7 @@ test('staticCSP = object', async (t) => {
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/static/index.html'
+      url: '/documentation'
     })
     t.equal(res.statusCode, 200)
     t.equal(res.headers['content-security-policy'], "default-src 'self'; script-src 'self';")
@@ -172,7 +172,7 @@ test('transformStaticCSP = function', async (t) => {
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/static/index.html'
+      url: '/documentation'
     })
     t.equal(res.statusCode, 200)
     t.equal(res.headers['content-security-policy'], "default-src 'self'; script-src 'self';")
@@ -212,7 +212,7 @@ test('transformStaticCSP = function, with @fastify/helmet', async (t) => {
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/static/index.html'
+      url: '/documentation'
     })
     t.equal(res.statusCode, 200)
     t.equal(res.headers['content-security-policy'], "default-src 'self'; script-src 'self';")

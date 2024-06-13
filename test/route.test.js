@@ -100,8 +100,8 @@ test('fastify.swagger should return a valid swagger yaml', async (t) => {
   t.pass('valid swagger yaml')
 })
 
-test('/documentation should redirect to ./documentation/static/index.html', async (t) => {
-  t.plan(3)
+test('/documentation should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi)
@@ -117,13 +117,14 @@ test('/documentation should redirect to ./documentation/static/index.html', asyn
     method: 'GET',
     url: '/documentation'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './documentation/static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('/documentation/ should redirect to ./static/index.html', async (t) => {
-  t.plan(3)
+test('/documentation/ should display index html ', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi)
@@ -139,13 +140,14 @@ test('/documentation/ should redirect to ./static/index.html', async (t) => {
     method: 'GET',
     url: '/documentation/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('/v1/documentation should redirect to ./documentation/static/index.html', async (t) => {
-  t.plan(3)
+test('/v1/documentation should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { routePrefix: '/v1/documentation' })
@@ -161,13 +163,14 @@ test('/v1/documentation should redirect to ./documentation/static/index.html', a
     method: 'GET',
     url: '/v1/documentation'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './documentation/static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('/v1/documentation/ should redirect to ./static/index.html', async (t) => {
-  t.plan(3)
+test('/v1/documentation/ should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { routePrefix: '/v1/documentation' })
@@ -183,18 +186,19 @@ test('/v1/documentation/ should redirect to ./static/index.html', async (t) => {
     method: 'GET',
     url: '/v1/documentation/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('/v1/foobar should redirect to ./foobar/static/index.html - in plugin', async (t) => {
-  t.plan(3)
+test('/v1/foobar should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
 
   fastify.register(async function (fastify, options) {
     await fastify.register(fastifySwagger, swaggerOption)
-    await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar' })
+    await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar', noRedirect: true })
 
     fastify.get('/', () => {})
     fastify.post('/', () => {})
@@ -208,13 +212,14 @@ test('/v1/foobar should redirect to ./foobar/static/index.html - in plugin', asy
     method: 'GET',
     url: '/v1/foobar'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './foobar/static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('/v1/foobar/ should redirect to ./static/index.html - in plugin', async (t) => {
-  t.plan(3)
+test('/v1/foobar/ should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
 
   fastify.register(async function (fastify, options) {
@@ -233,13 +238,14 @@ test('/v1/foobar/ should redirect to ./static/index.html - in plugin', async (t)
     method: 'GET',
     url: '/v1/foobar/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
-test('with routePrefix: \'/\' should redirect to ./static/index.html', async (t) => {
-  t.plan(3)
+test('with routePrefix: \'/\' should display index html', async (t) => {
+  t.plan(4)
   const fastify = Fastify()
 
   await fastify.register(fastifySwagger, swaggerOption)
@@ -251,9 +257,10 @@ test('with routePrefix: \'/\' should redirect to ./static/index.html', async (t)
     method: 'GET',
     url: '/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers.location, undefined)
   t.equal(typeof res.payload, 'string')
+  t.equal('text/html; charset=utf-8', res.headers['content-type'])
 })
 
 test('/documentation/static/:file should send back the correct file', async (t) => {
@@ -275,10 +282,10 @@ test('/documentation/static/:file should send back the correct file', async (t) 
   {
     const res = await fastify.inject({
       method: 'GET',
-      url: '/documentation/'
+      url: '/documentation/static/index.html'
     })
     t.equal(res.statusCode, 302)
-    t.equal(res.headers.location, './static/index.html')
+    t.equal(res.headers.location, '/documentation/')
   }
 
   {
@@ -481,20 +488,6 @@ test('/documentation/:myfile should run custom NotFoundHandler in dynamic mode',
   t.equal(res.statusCode, 410)
 })
 
-test('/documentation/ should redirect to ./static/index.html', async (t) => {
-  t.plan(2)
-  const fastify = Fastify()
-  await fastify.register(fastifySwagger, swaggerOption)
-  await fastify.register(fastifySwaggerUi)
-
-  const res = await fastify.inject({
-    method: 'GET',
-    url: '/documentation/'
-  })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
-})
-
 test('/documentation/* should not return module files when baseDir not set', async (t) => {
   t.plan(1)
   const fastify = Fastify()
@@ -522,8 +515,8 @@ test('should return silent log level of route /documentation', async (t) => {
     method: 'GET',
     url: '/documentation/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
 })
 
 test('should return empty log level of route /documentation', async (t) => {
@@ -540,6 +533,23 @@ test('should return empty log level of route /documentation', async (t) => {
     method: 'GET',
     url: '/documentation/'
   })
-  t.equal(res.statusCode, 302)
-  t.equal(res.headers.location, './static/index.html')
+  t.equal(res.statusCode, 200)
+  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+})
+
+test('/documentation should display index html with correct asset urls', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation'
+  })
+
+  t.equal(res.payload.includes('href="/documentation/static/index.css"'), true)
+  t.equal(res.payload.includes('src="/documentation/static/theme/theme-js.js"'), true)
+  t.equal(res.payload.includes('href="/documentation/index.css"'), false)
+  t.equal(res.payload.includes('src="/documentation/theme/theme-js.js"'), false)
 })

@@ -45,3 +45,37 @@ test.describe('Check customizations', () => {
     expect(logoId).toBe('example-logo') // it is included in the svg file
   })
 })
+
+test.describe('Check redirection and url handling of static assets', () => {
+  test('Check static/index.html redirects', async ({ page }) => {
+    const jsonResponsePromise = page.waitForResponse(/json/)
+    await page.goto(`${URL_DOCUMENTATION}/static/index.html`)
+
+    // Check if the page is redirected to /documentation
+    const url = await page.url()
+    expect(url).toContain(`${URL_DOCUMENTATION}`)
+    expect(url).not.toContain('static/index.html')
+
+    // Check if the page has requested the json spec, and if so has it succeeded
+    const jsonResponse = await jsonResponsePromise
+    expect(jsonResponse.ok()).toBe(true)
+  })
+
+  test('Check root UI without slash loads json spec', async ({ page }) => {
+    const jsonResponsePromise = page.waitForResponse(/json/)
+    await page.goto(`${URL_DOCUMENTATION}`)
+
+    // Check if the page has requested the json spec, and if so has it succeeded
+    const jsonResponse = await jsonResponsePromise
+    expect(jsonResponse.ok()).toBe(true)
+  })
+
+  test('Check root UI with trailing slash loads json spec', async ({ page }) => {
+    const jsonResponsePromise = page.waitForResponse(/json/)
+    await page.goto(`${URL_DOCUMENTATION}/`)
+
+    // Check if the page has requested the json spec, and if so has it succeeded
+    const jsonResponse = await jsonResponsePromise
+    expect(jsonResponse.ok()).toBe(true)
+  })
+})
