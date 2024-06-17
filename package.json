@@ -60,7 +60,7 @@
     "qs": "^6.12.1",
     "standard": "^17.1.0",
     "swagger-ui-dist": "5.17.14",
-    "tap": "^18.7.2",
+    "tap": "^19.2.5",
     "tsd": "^0.31.0"
   },
   "dependencies": {
