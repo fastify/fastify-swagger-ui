@@ -78,4 +78,13 @@ test.describe('Check redirection and url handling of static assets', () => {
     const jsonResponse = await jsonResponsePromise
     expect(jsonResponse.ok()).toBe(true)
   })
+
+  test('Check root UI with hash loads json spec', async ({ page }) => {
+    const jsonResponsePromise = page.waitForResponse(/json/)
+    await page.goto(`${URL_DOCUMENTATION}#default/get_example`)
+
+    // Check if the page has requested the json spec, and if so has it succeeded
+    const jsonResponse = await jsonResponsePromise
+    expect(jsonResponse.ok()).toBe(true)
+  })
 })
