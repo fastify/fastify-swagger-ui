@@ -27,7 +27,7 @@ async function fastifySwaggerUi (fastify, opts) {
 }
 
 module.exports = fp(fastifySwaggerUi, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: '@fastify/swagger-ui',
   dependencies: ['@fastify/swagger']
 })
