@@ -78,6 +78,10 @@ declare namespace fastifySwaggerUi {
   type FastifySwaggerUILogo = {
     type: string;
     content: string | Buffer;
+    href?: {
+      url: string;
+      target_blank?: boolean;
+    }
   }
 
   type SupportedHTTPMethods = "get" | "put" | "post" | "delete" | "options" | "head" | "patch" | "trace";
