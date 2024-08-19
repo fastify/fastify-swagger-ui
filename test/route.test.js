@@ -605,3 +605,54 @@ test('/docs/ should display index html with correct asset urls when documentatio
   t.assert.strictEqual(res.payload.includes('href="./index.css"'), false)
   t.assert.strictEqual(res.payload.includes('src="./theme/theme-js.js"'), false)
 })
+
+test('/documentation/ should display index html with correct asset urls', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/'
+  })
+
+  t.equal(res.payload.includes('href="./static/index.css"'), true)
+  t.equal(res.payload.includes('src="./static/theme/theme-js.js"'), true)
+  t.equal(res.payload.includes('href="./index.css"'), false)
+  t.equal(res.payload.includes('src="./theme/theme-js.js"'), false)
+})
+
+test('/docs should display index html with correct asset urls when documentation prefix is set', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] }, routePrefix: '/docs' })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/docs'
+  })
+
+  t.equal(res.payload.includes('href="/docs/static/index.css"'), true)
+  t.equal(res.payload.includes('src="/docs/static/theme/theme-js.js"'), true)
+  t.equal(res.payload.includes('href="/docs/index.css"'), false)
+  t.equal(res.payload.includes('src="/docs/theme/theme-js.js"'), false)
+})
+
+test('/docs/ should display index html with correct asset urls when documentation prefix is set', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] }, routePrefix: '/docs' })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/docs/'
+  })
+
+  t.equal(res.payload.includes('href="./static/index.css"'), true)
+  t.equal(res.payload.includes('src="./static/theme/theme-js.js"'), true)
+  t.equal(res.payload.includes('href="./index.css"'), false)
+  t.equal(res.payload.includes('src="./theme/theme-js.js"'), false)
+})
