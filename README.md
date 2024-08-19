@@ -245,10 +245,8 @@ await fastify.register(require('@fastify/swagger-ui'), {
   logo: {
     type: 'image/png',
     content: Buffer.from('iVBOR...', 'base64'),
-    href: {
-      url: '/documentation',
-      target_blank: true,
-    }
+    href: '/documentation',
+    target: '_blank'
   },
   theme: {
     favicon: [
