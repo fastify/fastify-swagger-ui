@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifyHelmet = require('@fastify/helmet')
@@ -43,5 +43,5 @@ test('fastify will response swagger csp', async (t) => {
     method: 'GET',
     url: '/'
   })
-  t.same(res.headers['content-security-policy'], csp)
+  t.assert.deepStrictEqual(res.headers['content-security-policy'], csp)
 })

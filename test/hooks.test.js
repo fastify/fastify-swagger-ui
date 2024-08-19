@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const yaml = require('yaml')
 
@@ -39,36 +39,36 @@ test('hooks on static swagger', async t => {
   })
 
   let res = await fastify.inject('/documentation')
-  t.equal(res.statusCode, 401, 'root auth required')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'root auth required')
 
   res = await fastify.inject('/documentation/yaml')
-  t.equal(res.statusCode, 401, 'auth required yaml')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required yaml')
   res = await fastify.inject({
     method: 'GET',
     url: '/documentation/yaml',
     headers: { authorization: basicAuthEncode('admin', 'admin') }
   })
-  t.equal(res.statusCode, 200)
-  t.equal(res.headers['content-type'], 'application/x-yaml')
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
   try {
     yaml.parse(res.payload)
-    t.pass('valid swagger yaml')
+    t.assert.ok(true, 'valid swagger yaml')
   } catch (err) {
-    t.fail(err)
+    t.assert.fail(err)
   }
 
   res = await fastify.inject('/documentation/json')
-  t.equal(res.statusCode, 401, 'auth required json')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required json')
   res = await fastify.inject({
     method: 'GET',
     url: '/documentation/json',
     headers: { authorization: basicAuthEncode('admin', 'admin') }
   })
-  t.equal(typeof res.payload, 'string')
-  t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
   try {
     yaml.parse(res.payload)
-    t.pass('valid swagger json')
+    t.assert.ok(true, 'valid swagger json')
   } catch (err) {
     t.fail(err)
   }
@@ -91,24 +91,24 @@ test('hooks on dynamic swagger', async t => {
   fastify.post('/fooBar123', schemaBody, () => {})
 
   let res = await fastify.inject('/documentation')
-  t.equal(res.statusCode, 401, 'root auth required')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'root auth required')
 
   res = await fastify.inject('/documentation/yaml')
-  t.equal(res.statusCode, 401, 'auth required yaml')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required yaml')
 
   res = await fastify.inject('/documentation/json')
-  t.equal(res.statusCode, 401, 'auth required json')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required json')
   res = await fastify.inject({
     method: 'GET',
     url: '/documentation/json',
     headers: { authorization: basicAuthEncode('admin', 'admin') }
   })
-  t.equal(typeof res.payload, 'string')
-  t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
 
   const swaggerObject = res.json()
-  t.ok(swaggerObject.paths)
-  t.ok(swaggerObject.paths['/fooBar123'])
+  t.assert.ok(swaggerObject.paths)
+  t.assert.ok(swaggerObject.paths['/fooBar123'])
 })
 
 test('catch all added schema', async t => {
@@ -136,5 +136,5 @@ test('catch all added schema', async t => {
 
   await fastify.ready()
   const openapi = fastify.swagger()
-  t.same(Object.keys(openapi.components.schemas), ['Root', 'Instance', 'Sub-Instance'])
+  t.assert.deepStrictEqual(Object.keys(openapi.components.schemas), ['Root', 'Instance', 'Sub-Instance'])
 })

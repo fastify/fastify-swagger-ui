@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
@@ -17,8 +17,8 @@ test('Swagger source does not contain sourceMaps', async (t) => {
   })
 
   const includesSourceMap = res.payload.includes('sourceMappingURL')
-  t.equal(includesSourceMap, false)
-  t.equal(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+  t.assert.deepStrictEqual(includesSourceMap, false)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
 })
 
 test('Swagger css does not contain sourceMaps', async (t) => {
@@ -33,6 +33,6 @@ test('Swagger css does not contain sourceMaps', async (t) => {
   })
 
   const includesSourceMap = res.payload.includes('sourceMappingURL')
-  t.equal(includesSourceMap, false)
-  t.equal(res.headers['content-type'], 'text/css; charset=UTF-8')
+  t.assert.deepStrictEqual(includesSourceMap, false)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=UTF-8')
 })
