@@ -6,12 +6,11 @@
   "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
-    "coverage": "npm run unit -- --coverage-report=lcovonly",
     "lint": "standard",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "node scripts/prepare-swagger-ui",
     "prepublishOnly": "npm run prepare",
-    "test": "npm run prepare && npm run coverage && npm run typescript",
+    "test": "npm run prepare && npm run unit && npm run typescript",
     "test:dev": "npm run lint && npm run unit && npm run typescript",
     "test:e2e:command": "node ./examples/example-e2e.js",
     "test:e2e": "npx playwright test",
