@@ -16,7 +16,7 @@
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
     "typescript": "tsd",
-    "unit": "c8 --100 node --test ./test/**.test.js"
+    "unit": "c8 --100 node --test test/**"
   },
   "repository": {
     "type": "git",
