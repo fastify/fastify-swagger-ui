@@ -1,6 +1,6 @@
 {
   "name": "@fastify/swagger-ui",
-  "version": "5.0.0-pre.fv5.1",
+  "version": "5.0.0-pre.fv5.2",
   "description": "Serve Swagger-ui for Fastify",
   "main": "index.js",
   "type": "commonjs",
@@ -45,15 +45,15 @@
   "homepage": "https://github.com/fastify/fastify-swagger-ui#readme",
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@fastify/basic-auth": "^5.1.1",
-    "@fastify/helmet": "^11.1.1",
+    "@fastify/basic-auth": "^6.0.0-pre.fv5.2",
+    "@fastify/helmet": "^12.0.0-pre.fv5.2",
     "@fastify/pre-commit": "^2.1.0",
-    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger": "^9.0.0-pre.fv5.1",
     "@playwright/test": "^1.43.1",
-    "@types/node": "^20.12.7",
+    "@types/node": "^22.0.0",
     "ajv": "^8.12.0",
     "c8": "^10.1.2",
-    "fastify": "^4.26.2",
+    "fastify": "5.0.0-alpha.3",
     "fs-extra": "^11.2.0",
     "qs": "^6.12.1",
     "standard": "^17.1.0",
@@ -61,8 +61,8 @@
     "tsd": "^0.31.0"
   },
   "dependencies": {
-    "@fastify/static": "^7.0.3",
-    "fastify-plugin": "^4.5.1",
+    "@fastify/static": "^8.0.0-pre.fv5.1",
+    "fastify-plugin": "^5.0.0-pre.fv5.1",
     "openapi-types": "^12.1.3",
     "rfdc": "^1.3.1",
     "yaml": "^2.4.1"
