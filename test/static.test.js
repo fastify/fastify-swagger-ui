@@ -2,7 +2,7 @@
 
 const fs = require('node:fs')
 const resolve = require('node:path').resolve
-const { test } = require('tap')
+const { test } = require('node:test')
 const yaml = require('yaml')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
@@ -34,10 +34,10 @@ test('swagger route returns yaml', async (t) => {
     url: '/documentation/yaml'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.equal(res.headers['content-type'], 'application/x-yaml')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
   yaml.parse(res.payload)
-  t.pass('valid swagger yaml')
+  t.assert.ok(true, 'valid swagger yaml')
 })
 
 test('swagger route returns json', async (t) => {
@@ -60,10 +60,10 @@ test('swagger route returns json', async (t) => {
     url: '/documentation/json'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
   yaml.parse(res.payload)
-  t.pass('valid swagger json')
+  t.assert.ok(true, 'valid swagger json')
 })
 
 test('postProcessor works, swagger route returns updated yaml', async (t) => {
@@ -90,11 +90,42 @@ test('postProcessor works, swagger route returns updated yaml', async (t) => {
     url: '/documentation/yaml'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.equal(res.headers['content-type'], 'application/x-yaml')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
   yaml.parse(res.payload)
-  t.matchSnapshot(res.payload)
-  t.pass('valid swagger yaml')
+  t.assert.strictEqual(res.payload, `openapi: 3.0.0
+info:
+  description: Test swagger specification
+  version: 1.0.0
+  title: Test swagger specification
+  contact:
+    email: super.developer@gmail.com
+servers:
+  - url: http://localhost:4000/
+    description: Localhost (uses test data)
+paths:
+  /status:
+    get:
+      description: Status route, so we can check if server is alive
+      tags:
+        - Status
+      responses:
+        "200":
+          description: Server is alive
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  health:
+                    type: boolean
+                  date:
+                    type: string
+                example:
+                  health: true
+                  date: 2018-02-19T15:36:46.758Z
+`)
+  t.assert.ok(true, 'valid swagger yaml')
 })
 
 test('swagger route returns explicitly passed doc', async (t) => {
@@ -125,8 +156,12 @@ test('swagger route returns explicitly passed doc', async (t) => {
   })
 
   const payload = JSON.parse(res.payload)
-  t.matchSnapshot(JSON.stringify(payload, null, 2))
-  t.pass('valid explicitly passed spec document')
+  t.assert.deepStrictEqual(payload, {
+    message: 'Route GET:/documentation/json not found',
+    error: 'Not Found',
+    statusCode: 404
+  })
+  t.assert.ok(true, 'valid explicitly passed spec document')
 })
 
 test('/documentation/:file should serve static file from the location of main specification file', async (t) => {
@@ -153,7 +188,7 @@ test('/documentation/:file should serve static file from the location of main sp
       url: '/documentation/non-existing-file'
     })
 
-    t.equal(res.statusCode, 404)
+    t.assert.deepStrictEqual(res.statusCode, 404)
   }
 
   {
@@ -162,8 +197,8 @@ test('/documentation/:file should serve static file from the location of main sp
       url: '/documentation/example-static-specification.yaml'
     })
 
-    t.equal(res.statusCode, 200)
-    t.equal(exampleStaticSpecificationYaml, res.payload)
+    t.assert.deepStrictEqual(res.statusCode, 200)
+    t.assert.deepStrictEqual(exampleStaticSpecificationYaml, res.payload)
   }
 
   {
@@ -172,7 +207,7 @@ test('/documentation/:file should serve static file from the location of main sp
       url: '/documentation/dynamic-swagger.js'
     })
 
-    t.equal(res.statusCode, 200)
+    t.assert.deepStrictEqual(res.statusCode, 200)
   }
 })
 
@@ -198,7 +233,7 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
     url: '/documentation/some-file-that-does-not-exist.js'
   })
 
-  t.equal(res.statusCode, 410)
+  t.assert.deepStrictEqual(res.statusCode, 410)
 })
 
 test('/documentation/:file should be served from custom location', async (t) => {
@@ -225,8 +260,8 @@ test('/documentation/:file should be served from custom location', async (t) => 
     url: '/documentation/oauth2-redirect.html'
   })
 
-  t.equal(res.statusCode, 200)
-  t.equal(oauthRedirectHtml, res.payload)
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.deepStrictEqual(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/:file should be served from custom location with trailing slash(es)', async (t) => {
@@ -252,8 +287,8 @@ test('/documentation/:file should be served from custom location with trailing s
     url: '/documentation/oauth2-redirect.html'
   })
 
-  t.equal(res.statusCode, 200)
-  t.equal(oauthRedirectHtml, res.payload)
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.deepStrictEqual(oauthRedirectHtml, res.payload)
 })
 
 test('/documentation/yaml returns cache.swaggerString on second request in static mode', async (t) => {
@@ -276,10 +311,10 @@ test('/documentation/yaml returns cache.swaggerString on second request in stati
       url: '/documentation/yaml'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/x-yaml')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
     yaml.parse(res.payload)
-    t.pass('valid swagger yaml')
+    t.assert.ok(true, 'valid swagger yaml')
   }
 
   {
@@ -288,10 +323,10 @@ test('/documentation/yaml returns cache.swaggerString on second request in stati
       url: '/documentation/yaml'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/x-yaml')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
     yaml.parse(res.payload)
-    t.pass('valid swagger yaml')
+    t.assert.ok(true, 'valid swagger yaml')
   }
 })
 
@@ -315,9 +350,9 @@ test('/documentation/json returns cache.swaggerObject on second request in stati
       url: '/documentation/json'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
-    t.pass('valid swagger json')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+    t.assert.ok(true, 'valid swagger json')
   }
 
   {
@@ -326,9 +361,9 @@ test('/documentation/json returns cache.swaggerObject on second request in stati
       url: '/documentation/json'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
-    t.pass('valid swagger json')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+    t.assert.ok(true, 'valid swagger json')
   }
 })
 
@@ -351,10 +386,10 @@ test('/documentation/yaml returns cache.swaggerString on second request in dynam
       url: '/documentation/yaml'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/x-yaml')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
     yaml.parse(res.payload)
-    t.pass('valid swagger yaml')
+    t.assert.ok(true, 'valid swagger yaml')
   }
 
   {
@@ -363,10 +398,10 @@ test('/documentation/yaml returns cache.swaggerString on second request in dynam
       url: '/documentation/yaml'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/x-yaml')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/x-yaml')
     yaml.parse(res.payload)
-    t.pass('valid swagger yaml')
+    t.assert.ok(true, 'valid swagger yaml')
   }
 })
 
@@ -389,9 +424,9 @@ test('/documentation/json returns cache.swaggerObject on second request in dynam
       url: '/documentation/json'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
-    t.pass('valid swagger json')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+    t.assert.ok(true, 'valid swagger json')
   }
 
   {
@@ -400,8 +435,8 @@ test('/documentation/json returns cache.swaggerObject on second request in dynam
       url: '/documentation/json'
     })
 
-    t.equal(typeof res.payload, 'string')
-    t.equal(res.headers['content-type'], 'application/json; charset=utf-8')
-    t.pass('valid swagger json')
+    t.assert.deepStrictEqual(typeof res.payload, 'string')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+    t.assert.ok(true, 'valid swagger json')
   }
 })

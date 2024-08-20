@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
@@ -23,11 +23,11 @@ test('swagger route does not return additional theme', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.notMatch(res.payload, /theme\/special\.js/)
-  t.notMatch(res.payload, /theme\/favicon\.png/)
-  t.notMatch(res.payload, /theme\/theme\.css/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual(/theme\/special\.js/.test(res.payload), false)
+  t.assert.deepStrictEqual(/theme\/favicon\.png/.test(res.payload), false)
+  t.assert.deepStrictEqual(/theme\/theme\.css/.test(res.payload), false)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 })
 
 test('swagger route returns additional theme', async (t) => {
@@ -66,18 +66,18 @@ test('swagger route returns additional theme', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.match(res.payload, /theme\/special\.js/)
-  t.match(res.payload, /theme\/favicon\.png/)
-  t.match(res.payload, /theme\/theme\.css/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.match(res.payload, /theme\/special\.js/)
+  t.assert.match(res.payload, /theme\/favicon\.png/)
+  t.assert.match(res.payload, /theme\/theme\.css/)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 
   {
     const res = await fastify.inject({
       method: 'GET',
       url: '/documentation/static/theme/special.js'
     })
-    t.equal(res.payload, 'alert("loaded test-theme")')
+    t.assert.deepStrictEqual(res.payload, 'alert("loaded test-theme")')
   }
 
   {
@@ -85,8 +85,8 @@ test('swagger route returns additional theme', async (t) => {
       method: 'GET',
       url: '/documentation/static/theme/favicon.png'
     })
-    t.equal(res.statusCode, 200)
-    t.equal(res.headers['content-type'], 'image/png')
+    t.assert.deepStrictEqual(res.statusCode, 200)
+    t.assert.deepStrictEqual(res.headers['content-type'], 'image/png')
   }
 
   {
@@ -94,7 +94,7 @@ test('swagger route returns additional theme', async (t) => {
       method: 'GET',
       url: '/documentation/static/theme/theme.css'
     })
-    t.equal(res.payload, '* {border: 1px red solid;}')
+    t.assert.deepStrictEqual(res.payload, '* {border: 1px red solid;}')
   }
 })
 
@@ -122,16 +122,16 @@ test('swagger route returns additional theme - only js', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.match(res.payload, /theme\/special\.js/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.match(res.payload, /theme\/special\.js/)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 
   {
     const res = await fastify.inject({
       method: 'GET',
       url: '/documentation/static/theme/special.js'
     })
-    t.equal(res.payload, 'alert("loaded test-theme")')
+    t.assert.deepStrictEqual(res.payload, 'alert("loaded test-theme")')
   }
 })
 
@@ -159,16 +159,16 @@ test('swagger route returns additional theme - only css', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.match(res.payload, /theme\/theme\.css/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.match(res.payload, /theme\/theme\.css/)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 
   {
     const res = await fastify.inject({
       method: 'GET',
       url: '/documentation/static/theme/theme.css'
     })
-    t.equal(res.payload, '* {border: 1px red solid;}')
+    t.assert.deepStrictEqual(res.payload, '* {border: 1px red solid;}')
   }
 })
 
@@ -202,17 +202,17 @@ test('swagger route returns additional theme - only favicon', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.match(res.payload, /theme\/favicon\.png/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.match(res.payload, /theme\/favicon\.png/)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 
   {
     const res = await fastify.inject({
       method: 'GET',
       url: '/documentation/static/theme/favicon.png'
     })
-    t.equal(res.statusCode, 200)
-    t.equal(res.headers['content-type'], 'image/png')
+    t.assert.deepStrictEqual(res.statusCode, 200)
+    t.assert.deepStrictEqual(res.headers['content-type'], 'image/png')
   }
 })
 
@@ -238,7 +238,7 @@ test('swagger route returns additional theme - only title', async (t) => {
     url: '/documentation'
   })
 
-  t.equal(typeof res.payload, 'string')
-  t.match(res.payload, /<title>My custom title<\/title>/)
-  t.equal(res.headers['content-type'], 'text/html; charset=utf-8')
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.match(res.payload, /<title>My custom title<\/title>/)
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 })

@@ -6,20 +6,17 @@
   "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
-    "coverage": "npm run unit -- --coverage-report=lcovonly",
     "lint": "standard",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "node scripts/prepare-swagger-ui",
     "prepublishOnly": "npm run prepare",
-    "test": "npm run prepare && npm run coverage && npm run typescript",
+    "test": "npm run prepare && npm run unit && npm run typescript",
     "test:dev": "npm run lint && npm run unit && npm run typescript",
     "test:e2e:command": "node ./examples/example-e2e.js",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
     "typescript": "tsd",
-    "unit": "tap",
-    "unit:report": "npm run unit -- --coverage-report=html",
-    "unit:verbose": "npm run unit -- -Rspec"
+    "unit": "c8 --100 node --test"
   },
   "repository": {
     "type": "git",
@@ -52,15 +49,14 @@
     "@fastify/pre-commit": "^2.1.0",
     "@fastify/swagger": "^9.0.0-pre.fv5.1",
     "@playwright/test": "^1.43.1",
-    "@tapjs/snapshot": "^4.0.0",
     "@types/node": "^22.0.0",
     "ajv": "^8.12.0",
+    "c8": "^10.1.2",
     "fastify": "5.0.0-alpha.3",
     "fs-extra": "^11.2.0",
     "qs": "^6.12.1",
     "standard": "^17.1.0",
     "swagger-ui-dist": "5.17.14",
-    "tap": "^19.2.5",
     "tsd": "^0.31.0"
   },
   "dependencies": {

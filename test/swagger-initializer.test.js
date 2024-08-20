@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
@@ -17,8 +17,8 @@ test('/documentation/static/swagger-initializer.js should have default uiConfig'
     url: '/documentation/static/swagger-initializer.js'
   })
 
-  t.equal(res.statusCode, 200)
-  t.ok(res.payload.includes('const config = {}'))
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.ok(res.payload.includes('const config = {}'))
 })
 
 test('/documentation/static/swagger-initializer.js should have configurable uiConfig', async (t) => {
@@ -37,8 +37,8 @@ test('/documentation/static/swagger-initializer.js should have configurable uiCo
     url: '/documentation/static/swagger-initializer.js'
   })
 
-  t.equal(res.statusCode, 200)
-  t.ok(res.payload.includes("const config = {\"onComplete\":() => { alert('test') }}"))
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.ok(res.payload.includes("const config = {\"onComplete\":() => { alert('test') }}"))
 })
 
 test('/documentation/static/swagger-initializer.js should have default initOAuth', async (t) => {
@@ -53,8 +53,8 @@ test('/documentation/static/swagger-initializer.js should have default initOAuth
     url: '/documentation/static/swagger-initializer.js'
   })
 
-  t.equal(res.statusCode, 200)
-  t.ok(res.payload.includes('ui.initOAuth({})'))
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.ok(res.payload.includes('ui.initOAuth({})'))
 })
 
 test('/documentation/static/swagger-initializer.js should have configurable initOAuth', async (t) => {
@@ -73,8 +73,8 @@ test('/documentation/static/swagger-initializer.js should have configurable init
     url: '/documentation/static/swagger-initializer.js'
   })
 
-  t.equal(res.statusCode, 200)
-  t.ok(res.payload.includes('ui.initOAuth({"clientId":"someId"})'))
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.ok(res.payload.includes('ui.initOAuth({"clientId":"someId"})'))
 })
 
 test('customize logo', async (t) => {
@@ -90,5 +90,5 @@ test('customize logo', async (t) => {
   await fastify.register(fastifySwaggerUi, { logo: { type: 'image/png', content: 'foobar' } })
 
   const res = await fastify.inject('/documentation/static/swagger-initializer.js')
-  t.equal(res.body.indexOf(Buffer.from('foobar').toString('base64')) > -1, true)
+  t.assert.deepStrictEqual(res.body.indexOf(Buffer.from('foobar').toString('base64')) > -1, true)
 })
