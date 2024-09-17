@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
@@ -12,7 +12,7 @@ test('fastify.swaggerCSP should exist', async (t) => {
   await fastify.register(fastifySwagger)
   await fastify.register(fastifySwaggerUi)
 
-  t.ok(fastify.swaggerCSP)
-  t.ok(Array.isArray(fastify.swaggerCSP.script))
-  t.ok(Array.isArray(fastify.swaggerCSP.style))
+  t.assert.ok(fastify.swaggerCSP)
+  t.assert.ok(Array.isArray(fastify.swaggerCSP.script))
+  t.assert.ok(Array.isArray(fastify.swaggerCSP.style))
 })

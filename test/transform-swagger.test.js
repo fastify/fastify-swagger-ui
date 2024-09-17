@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
@@ -52,9 +52,9 @@ test('transformSpecification should modify the json', async (t) => {
   })
   await fastify.register(fastifySwaggerUi, {
     transformSpecification: function (swaggerObject, req, reply) {
-      t.not(swaggerObject, fastify.swagger())
-      t.ok(req)
-      t.ok(reply)
+      t.assert.notEqual(swaggerObject, fastify.swagger())
+      t.assert.ok(req)
+      t.assert.ok(reply)
       swaggerObject.swagger = '2.1'
       return swaggerObject
     }
@@ -67,8 +67,8 @@ test('transformSpecification should modify the json', async (t) => {
     url: '/documentation/json'
   })
 
-  t.notSame(fastify.swagger(), JSON.parse(res.body))
-  t.equal(JSON.parse(res.body).swagger, '2.1')
+  t.assert.notDeepEqual(fastify.swagger(), JSON.parse(res.body))
+  t.assert.strictEqual(JSON.parse(res.body).swagger, '2.1')
 })
 
 test('transformSpecificationClone false should not deepclone fastify.swagger() /1', async (t) => {
@@ -118,9 +118,9 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
   await fastify.register(fastifySwaggerUi, {
     transformSpecificationClone: false,
     transformSpecification: function (swaggerObject, req, reply) {
-      t.equal(swaggerObject, fastify.swagger())
-      t.ok(req)
-      t.ok(reply)
+      t.assert.deepStrictEqual(swaggerObject, fastify.swagger())
+      t.assert.ok(req)
+      t.assert.ok(reply)
       return swaggerObject
     }
   })
@@ -135,7 +135,7 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
   const swagger = fastify.swagger()
   Object.getOwnPropertySymbols(swagger.definitions.User).forEach((symbol) => delete swagger.definitions.User[symbol])
 
-  t.strictSame(swagger, JSON.parse(res.body))
+  t.assert.deepStrictEqual(swagger, JSON.parse(res.body))
 })
 
 test('transformSpecification should modify the yaml', async (t) => {
@@ -185,8 +185,8 @@ test('transformSpecification should modify the yaml', async (t) => {
   await fastify.register(fastifySwaggerUi, {
     transformSpecification: function (swaggerObject, req, reply) {
       swaggerObject.swagger = '2.1'
-      t.ok(req)
-      t.ok(reply)
+      t.assert.ok(req)
+      t.assert.ok(reply)
       return swaggerObject
     }
   })
@@ -199,8 +199,8 @@ test('transformSpecification should modify the yaml', async (t) => {
     url: '/documentation/yaml'
   })
 
-  t.same(fastify.swagger(), swaggerPre)
-  t.equal(yaml.parse(res.body).swagger, '2.1')
+  t.assert.deepStrictEqual(fastify.swagger(), swaggerPre)
+  t.assert.deepStrictEqual(yaml.parse(res.body).swagger, '2.1')
 })
 
 test('transformSpecificationClone false should not deepclone fastify.swagger() /2', async (t) => {
@@ -250,9 +250,9 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
   await fastify.register(fastifySwaggerUi, {
     transformSpecificationClone: false,
     transformSpecification: function (swaggerObject, req, reply) {
-      t.equal(swaggerObject, fastify.swagger())
-      t.ok(req)
-      t.ok(reply)
+      t.assert.deepStrictEqual(swaggerObject, fastify.swagger())
+      t.assert.ok(req)
+      t.assert.ok(reply)
       return swaggerObject
     }
   })
@@ -265,5 +265,5 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
     url: '/documentation/yaml'
   })
 
-  t.same(fastify.swagger(), swaggerPre)
+  t.assert.deepStrictEqual(fastify.swagger(), swaggerPre)
 })
