@@ -244,7 +244,9 @@ It's possible to override the logo displayed in the top bar by specifying:
 await fastify.register(require('@fastify/swagger-ui'), {
   logo: {
     type: 'image/png',
-    content: Buffer.from('iVBOR...', 'base64')
+    content: Buffer.from('iVBOR...', 'base64'),
+    href: '/documentation',
+    target: '_blank'
   },
   theme: {
     favicon: [

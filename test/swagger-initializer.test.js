@@ -90,5 +90,54 @@ test('customize logo', async (t) => {
   await fastify.register(fastifySwaggerUi, { logo: { type: 'image/png', content: 'foobar' } })
 
   const res = await fastify.inject('/documentation/static/swagger-initializer.js')
+  t.assert.deepStrictEqual(res.body.includes('// Replace the logo'), true)
   t.assert.deepStrictEqual(res.body.indexOf(Buffer.from('foobar').toString('base64')) > -1, true)
+})
+
+test('customized logo has target', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
+
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, { logo: { type: 'image/png', content: 'foobar', target: '_self' } })
+
+  const res = await fastify.inject('/documentation/static/swagger-initializer.js')
+  t.assert.deepStrictEqual(res.body.includes("img.target = '_self'"), true)
+})
+
+test('customized logo has href', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
+
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, { logo: { type: 'image/png', content: 'foobar', href: 'http://www.example.com' } })
+
+  const res = await fastify.inject('/documentation/static/swagger-initializer.js')
+  t.assert.deepStrictEqual(res.body.includes("img.href = 'http://www.example.com'"), true)
+})
+
+test('no customized logo', async (t) => {
+  const config = {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  }
+
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, config)
+  await fastify.register(fastifySwaggerUi, { logo: null })
+
+  const res = await fastify.inject('/documentation/static/swagger-initializer.js')
+  t.assert.deepStrictEqual(res.body.includes('// Replace the logo'), false)
 })
