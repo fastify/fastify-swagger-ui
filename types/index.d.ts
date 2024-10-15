@@ -1,6 +1,13 @@
 /// <reference lib="dom" />
 
-import { FastifyPluginCallback, FastifyReply, FastifyRequest, onRequestHookHandler, preHandlerHookHandler } from 'fastify';
+import {
+  FastifyPluginCallback,
+  FastifyReply,
+  FastifyRequest,
+  onRequestHookHandler,
+  preHandlerHookHandler,
+  RegisterOptions,
+} from 'fastify';
 
 /**
  * Swagger-UI Vendor Extensions
@@ -31,13 +38,17 @@ declare module 'fastify' {
 type FastifySwaggerUi = FastifyPluginCallback<fastifySwaggerUi.FastifySwaggerUiOptions>;
 
 declare namespace fastifySwaggerUi {
-  export interface FastifySwaggerUiOptions {
+  export interface FastifySwaggerUiOptions extends Omit<RegisterOptions, 'prefix' | 'hooks'> {
     baseDir?: string;
     /**
      * Overwrite the swagger url end-point
      * @default /documentation
      */
     routePrefix?: string;
+    /**
+     * Make it explicit that this plugin overrides the prefix value
+     */
+    prefix?: never;
     /**
      * Swagger UI Config
      */
@@ -52,6 +63,10 @@ declare namespace fastifySwaggerUi {
      * route hooks
      */
     uiHooks?: FastifySwaggerUiHooksOptions
+    /**
+     * Make it explicit that this plugin overrides the prefix value
+     */
+    hooks?: never;
 
     theme?: FastifySwaggerUiTheme
 
@@ -62,7 +77,7 @@ declare namespace fastifySwaggerUi {
 
     /**
      * Use this parameter to set a validator URL
-     * 
+     *
      * @default false
      */
     validatorUrl?: string | false
@@ -441,7 +456,7 @@ declare namespace fastifySwaggerUi {
     /**
      * scope separator for passing scopes, encoded before calling, default
      * value is a space (encoded value %20).
-     * 
+     *
      * @default ' '
      */
     scopeSeparator?: string;
@@ -449,7 +464,7 @@ declare namespace fastifySwaggerUi {
     /**
      * string array or scope separator (i.e. space) separated string of
      * initially selected oauth scopes
-     * 
+     *
      * @default []
      */
     scopes?: string | string[];
