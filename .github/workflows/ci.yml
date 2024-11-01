@@ -20,7 +20,7 @@ jobs:
     uses: ./.github/workflows/playwright.yml
 
   test:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5.0.1
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
     needs: e2e
     with:
       license-check: true
