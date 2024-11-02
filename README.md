@@ -18,9 +18,9 @@ npm i @fastify/swagger-ui
 
 | Plugin version | Fastify version | Swagger Plugin Version |
 | -------------- | --------------- | ---------------------- |
-| `^5.0.0`       | `^5.0.0`        | `^9.0.0`               |
-| `^2.0.0`       | `^4.0.0`        | `^8.0.0`               |
-| `^1.0.0`       | `^4.0.0`        | `^8.0.0`               |
+| `^5.x`         | `^5.x`          | `^9.x`                 |
+| `^2.x`         | `^4.x`          | `^8.x`                 |
+| `^1.x`         | `^4.x`          | `^8.x`                 |
 
 
 Please note that if a Fastify version is out of support, then so are the corresponding version(s) of this plugin
