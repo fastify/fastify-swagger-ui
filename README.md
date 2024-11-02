@@ -22,6 +22,11 @@ npm i @fastify/swagger-ui
 | `^2.0.0`       | `^4.0.0`        | `^8.0.0`               |
 | `^1.0.0`       | `^4.0.0`        | `^8.0.0`               |
 
+
+Please note that if a Fastify version is out of support, then so are the corresponding version(s) of this plugin
+in the table above.
+See [Fastify's LTS policy](https://github.com/fastify/fastify/blob/main/docs/Reference/LTS.md) for more details.
+
 <a name="usage"></a>
 ## Usage
 Add it with `@fastify/swagger` to your project with `register`, pass it some options, call the `swagger` API, and you are done!
