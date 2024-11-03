@@ -27,5 +27,5 @@ paths:
                   date:
                      type: string
                 example:
-                 health: true 
+                 health: true
                  date: "2018-02-19T15:36:46.758Z"
