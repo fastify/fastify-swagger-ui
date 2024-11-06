@@ -46,6 +46,10 @@ declare namespace fastifySwaggerUi {
      */
     routePrefix?: string;
     /**
+     * Add an index prefix. This is for when the Fastify server is behind path based routing.  ex. NGINX
+     */
+    indexPrefix?: string;
+    /**
      * Make it explicit that this plugin overrides the prefix value
      */
     prefix?: never;
