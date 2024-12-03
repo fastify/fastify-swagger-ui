@@ -295,7 +295,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'index.html'),
@@ -322,7 +322,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/oauth2-redirect.html'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'oauth2-redirect.html'),
@@ -338,7 +338,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui.css'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui.css'),
@@ -354,7 +354,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui-bundle.js'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui-bundle.js'),
@@ -370,7 +370,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui-standalone-preset.js'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui-standalone-preset.js'),
