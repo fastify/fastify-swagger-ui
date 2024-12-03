@@ -18,7 +18,7 @@ test('Swagger source does not contain sourceMaps', async (t) => {
 
   const includesSourceMap = res.payload.includes('sourceMappingURL')
   t.assert.deepStrictEqual(includesSourceMap, false)
-  t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=utf-8')
 })
 
 test('Swagger css does not contain sourceMaps', async (t) => {
@@ -34,5 +34,5 @@ test('Swagger css does not contain sourceMaps', async (t) => {
 
   const includesSourceMap = res.payload.includes('sourceMappingURL')
   t.assert.deepStrictEqual(includesSourceMap, false)
-  t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=UTF-8')
+  t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=utf-8')
 })

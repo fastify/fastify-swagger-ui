@@ -112,19 +112,20 @@ await fastify.ready()
 
 #### Options
 
- | Option             | Default          | Description                                                                                                               |
- | ------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
- | baseDir              | undefined        | Specify the directory where all spec files that are included in the main one using $ref will be located. By default, this is the directory where the main spec file is located. Provided value should be an absolute path without trailing slash.     |
- | initOAuth            | {}               | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).     |
- | routePrefix          | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                            |
- | staticCSP            | false            | Enable CSP header for static resources.                                                                                   |
- | transformStaticCSP   | undefined        | Synchronous function to transform CSP header for static resources if the header has been previously set.                  |
- | transformSpecification     | undefined        | Synchronous function to transform the swagger document.                                                                   |
- | transformSpecificationClone| true             | Provide a deepcloned swaggerObject to transformSpecification                                                                    |
- | uiConfig             | {}               | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                   |
- | uiHooks              | {}               | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://fastify.dev/docs/latest/Reference/Routes/#routes-options) interface.|
- | theme                | {}               | Add custom JavaScript and CSS to the Swagger UI web page |
- | logLevel             | info             | Allow to define route log level.                                                                                          |
+ | Option             | Default         | Description                                                                                                                                                                                                                                       |
+ | ------------------ | --------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | baseDir              | undefined       | Specify the directory where all spec files that are included in the main one using $ref will be located. By default, this is the directory where the main spec file is located. Provided value should be an absolute path without trailing slash. |
+ | initOAuth            | {}              | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).                                                                                                                             |
+ | routePrefix          | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                                                                                                                                                    |
+ | indexPrefix          | '' | Add an additional prefix. This is for when the Fastify server is behind path based routing.  ex. NGINX                                                                                                                                            |
+ | staticCSP            | false           | Enable CSP header for static resources.                                                                                                                                                                                                           |
+ | transformStaticCSP   | undefined       | Synchronous function to transform CSP header for static resources if the header has been previously set.                                                                                                                                          |
+ | transformSpecification     | undefined       | Synchronous function to transform the swagger document.                                                                                                                                                                                           |
+ | transformSpecificationClone| true            | Provide a deepcloned swaggerObject to transformSpecification                                                                                                                                                                                      |
+ | uiConfig             | {}              | Configuration options for [Swagger UI](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md).                                                                                                                        |
+ | uiHooks              | {}              | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://fastify.dev/docs/latest/Reference/Routes/#routes-options) interface.                              |
+ | theme                | {}              | Add custom JavaScript and CSS to the Swagger UI web page                                                                                                                                                                                          |
+ | logLevel             | info            | Allow to define route log level.                                                                                                                                                                                                                  |
 
 The plugin will expose the documentation with the following APIs:
 

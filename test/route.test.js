@@ -1,7 +1,7 @@
 'use strict'
 
-const t = require('node:test')
-const test = t.test
+const nodeTest = require('node:test')
+const test = nodeTest.test
 const Fastify = require('fastify')
 const Swagger = require('@apidevtools/swagger-parser')
 const yaml = require('yaml')
@@ -16,6 +16,7 @@ const {
 } = require('../examples/options')
 
 const resolve = require('node:path').resolve
+const join = require('node:path').join
 const readFileSync = require('node:fs').readFileSync
 
 const schemaParamsWithoutDesc = {
@@ -294,7 +295,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'index.html'),
@@ -321,7 +322,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/oauth2-redirect.html'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'oauth2-redirect.html'),
@@ -337,7 +338,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui.css'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'text/css; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui.css'),
@@ -353,7 +354,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui-bundle.js'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui-bundle.js'),
@@ -369,7 +370,7 @@ test('/documentation/static/:file should send back the correct file', async (t) 
       url: '/documentation/static/swagger-ui-standalone-preset.js'
     })
     t.assert.deepStrictEqual(typeof res.payload, 'string')
-    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=UTF-8')
+    t.assert.deepStrictEqual(res.headers['content-type'], 'application/javascript; charset=utf-8')
     t.assert.deepStrictEqual(
       readFileSync(
         resolve(__dirname, '..', 'static', 'swagger-ui-standalone-preset.js'),
@@ -538,8 +539,35 @@ test('should return empty log level of route /documentation', async (t) => {
   t.assert.deepStrictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
 })
 
+const assertIndexUrls = (t, indexHtml, prefix) => {
+  t.assert.deepStrictEqual(indexHtml.includes(`href="${prefix}/static/index.css"`), true)
+  t.assert.deepStrictEqual(indexHtml.includes(`src="${prefix}/static/theme/theme-js.js"`), true)
+  t.assert.deepStrictEqual(indexHtml.includes(`href="${prefix}/index.css"`), false)
+  t.assert.deepStrictEqual(indexHtml.includes(`src="${prefix}/theme/theme-js.js"`), false)
+}
+
+const validateIndexUrls = async (t, fastify, indexHtml, prefix = '') => {
+  const hrefs = indexHtml.matchAll(/href="([^"]*)"/g)
+  for (const [, path] of hrefs) {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: join(prefix, path)
+    })
+
+    t.assert.equal(res.statusCode, 200)
+  }
+  const srcs = indexHtml.matchAll(/src="([^"]*)"/g)
+  for (const [, path] of srcs) {
+    const res = await fastify.inject({
+      method: 'GET',
+      url: join(prefix, path)
+    })
+    t.assert.equal(res.statusCode, 200)
+  }
+}
+
 test('/documentation should display index html with correct asset urls', async (t) => {
-  t.plan(6)
+  t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
@@ -548,59 +576,66 @@ test('/documentation should display index html with correct asset urls', async (
     method: 'GET',
     url: '/documentation'
   })
+  t.assert.equal(res.statusCode, 200)
 
-  t.assert.deepStrictEqual(res.payload.includes('href="./documentation/static/index.css"'), true)
-  t.assert.deepStrictEqual(res.payload.includes('src="./documentation/static/theme/theme-js.js"'), true)
-  t.assert.deepStrictEqual(res.payload.includes('href="./documentation/index.css"'), false)
-  t.assert.deepStrictEqual(res.payload.includes('src="./documentation/theme/theme-js.js"'), false)
-
-  let cssRes = await fastify.inject({
-    method: 'GET',
-    url: '/documentation/static/index.css'
-  })
-  t.assert.equal(cssRes.statusCode, 200)
-  cssRes = await fastify.inject({
-    method: 'GET',
-    url: './documentation/static/index.css'
-  })
-  t.assert.equal(cssRes.statusCode, 200)
+  assertIndexUrls(t, res.payload, '/documentation')
+  await validateIndexUrls(t, fastify, res.payload)
 })
 
 /**
  * This emulates when the server is inside an NGINX application that routes by path
  */
-test('/documentation should display index html with correct asset urls when nested', async (t) => {
-  t.plan(5)
+const testCases = [
+  ['/swagger-app', undefined],
+  ['/swagger-app/', undefined],
+  ['/swagger-app', 'documentation']
+]
+testCases.forEach(([prefix, pluginPrefix]) => {
+  test(`${prefix} ${pluginPrefix} should display index html with correct asset urls when nested`, async (t) => {
+    t.plan(13)
+    const fastify = Fastify()
+    await fastify.register(
+      async (childFastify) => {
+        await childFastify.register(fastifySwagger, swaggerOption)
+        await childFastify.register(fastifySwaggerUi, { indexPrefix: prefix, routePrefix: pluginPrefix, theme: { js: [{ filename: 'theme-js.js' }] } })
+      },
+      {
+        prefix: '/swagger-app'
+      }
+    )
+
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/swagger-app/documentation'
+    })
+    t.assert.equal(res.statusCode, 200)
+
+    assertIndexUrls(t, res.payload, '/swagger-app/documentation')
+
+    await validateIndexUrls(t, fastify, res.payload)
+  })
+})
+
+/**
+ * This emulates when the server is inside an NGINX application that routes by path
+ */
+test('/api/v1/docs should display index html with correct asset urls', async (t) => {
+  t.plan(13)
   const fastify = Fastify()
-  await fastify.register(
-    async () => {
-      await fastify.register(fastifySwagger, swaggerOption)
-      await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
-    },
-    {
-      prefix: '/swagger-app'
-    }
-  )
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { prefix: '/api/v1/docs', theme: { js: [{ filename: 'theme-js.js' }] } })
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/swagger-app/documentation'
+    url: '/api/v1/docs'
   })
-
-  t.assert.deepStrictEqual(res.payload.includes('href="./documentation/static/index.css"'), true)
-  t.assert.deepStrictEqual(res.payload.includes('src="./documentation/static/theme/theme-js.js"'), true)
-  t.assert.deepStrictEqual(res.payload.includes('href="./documentation/index.css"'), false)
-  t.assert.deepStrictEqual(res.payload.includes('src="./documentation/theme/theme-js.js"'), false)
-
-  const cssRes = await fastify.inject({
-    method: 'GET',
-    url: '/swagger-app/documentation/static/index.css'
-  })
-  t.assert.equal(cssRes.statusCode, 200)
+  t.assert.equal(res.statusCode, 200)
+  assertIndexUrls(t, res.payload, '/api/v1/docs')
+  await validateIndexUrls(t, fastify, res.payload)
 })
 
 test('/documentation/ should display index html with correct asset urls', async (t) => {
-  t.plan(4)
+  t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
@@ -609,15 +644,14 @@ test('/documentation/ should display index html with correct asset urls', async 
     method: 'GET',
     url: '/documentation/'
   })
+  t.assert.equal(res.statusCode, 200)
 
-  t.assert.strictEqual(res.payload.includes('href="./static/index.css"'), true)
-  t.assert.strictEqual(res.payload.includes('src="./static/theme/theme-js.js"'), true)
-  t.assert.strictEqual(res.payload.includes('href="./index.css"'), false)
-  t.assert.strictEqual(res.payload.includes('src="./theme/theme-js.js"'), false)
+  assertIndexUrls(t, res.payload, '.')
+  await validateIndexUrls(t, fastify, res.payload, '/documentation/')
 })
 
 test('/docs should display index html with correct asset urls when documentation prefix is set', async (t) => {
-  t.plan(4)
+  t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] }, routePrefix: '/docs' })
@@ -626,11 +660,10 @@ test('/docs should display index html with correct asset urls when documentation
     method: 'GET',
     url: '/docs'
   })
+  t.assert.equal(res.statusCode, 200)
 
-  t.assert.strictEqual(res.payload.includes('href="./docs/static/index.css"'), true)
-  t.assert.strictEqual(res.payload.includes('src="./docs/static/theme/theme-js.js"'), true)
-  t.assert.strictEqual(res.payload.includes('href="./docs/index.css"'), false)
-  t.assert.strictEqual(res.payload.includes('src="./docs/theme/theme-js.js"'), false)
+  assertIndexUrls(t, res.payload, '/docs')
+  await validateIndexUrls(t, fastify, res.payload)
 })
 
 test('/docs should display index html with correct asset urls when documentation prefix is set with no leading slash', async (t) => {
@@ -668,7 +701,7 @@ test('/docs/ should display index html with correct asset urls when documentatio
 })
 
 test('/documentation/ should display index html with correct asset urls', async (t) => {
-  t.plan(4)
+  t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] } })
@@ -677,15 +710,15 @@ test('/documentation/ should display index html with correct asset urls', async 
     method: 'GET',
     url: '/documentation/'
   })
+  t.assert.equal(res.statusCode, 200)
 
-  t.assert.strictEqual(res.payload.includes('href="./static/index.css"'), true)
-  t.assert.strictEqual(res.payload.includes('src="./static/theme/theme-js.js"'), true)
-  t.assert.strictEqual(res.payload.includes('href="./index.css"'), false)
-  t.assert.strictEqual(res.payload.includes('src="./theme/theme-js.js"'), false)
+  assertIndexUrls(t, res.payload, '.')
+
+  await validateIndexUrls(t, fastify, res.payload, '/documentation')
 })
 
 test('/docs should display index html with correct asset urls when documentation prefix is set', async (t) => {
-  t.plan(4)
+  t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
   await fastify.register(fastifySwaggerUi, { theme: { js: [{ filename: 'theme-js.js' }] }, routePrefix: '/docs' })
@@ -694,11 +727,11 @@ test('/docs should display index html with correct asset urls when documentation
     method: 'GET',
     url: '/docs'
   })
+  t.assert.equal(res.statusCode, 200)
 
-  t.assert.strictEqual(res.payload.includes('href="./docs/static/index.css"'), true)
-  t.assert.strictEqual(res.payload.includes('src="./docs/static/theme/theme-js.js"'), true)
-  t.assert.strictEqual(res.payload.includes('href="./docs/index.css"'), false)
-  t.assert.strictEqual(res.payload.includes('src="./docs/theme/theme-js.js"'), false)
+  assertIndexUrls(t, res.payload, '/docs')
+
+  await validateIndexUrls(t, fastify, res.payload)
 })
 
 test('/docs/ should display index html with correct asset urls when documentation prefix is set', async (t) => {
