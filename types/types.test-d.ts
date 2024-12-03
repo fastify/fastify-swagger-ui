@@ -29,10 +29,12 @@ app.register(fastifySwaggerUi);
 app.register(fastifySwaggerUi, {});
 app.register(fastifySwaggerUi, {
   routePrefix: '/documentation',
+  indexPrefix: '/custom-prefix'
 });
 
 const fastifySwaggerOptions: FastifySwaggerUiOptions = {
   routePrefix: '/documentation',
+  indexPrefix: '/custom-prefix'
 }
 app.register(fastifySwaggerUi, fastifySwaggerOptions);
 
@@ -91,6 +93,7 @@ app.get('/public/route', {
 app
   .register(fastifySwaggerUi, {
     routePrefix: '/documentation',
+    indexPrefix: '/custom-prefix'
   })
 
 app
