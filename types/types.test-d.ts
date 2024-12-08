@@ -102,6 +102,7 @@ app
     initOAuth
   })
   .ready((err) => {
+    expectType<Error | null>(err)
     app.swagger()
   })
 
