@@ -32,11 +32,13 @@ See [Fastify's LTS policy](https://github.com/fastify/fastify/blob/main/docs/Ref
 Add it with `@fastify/swagger` to your project with `register`, pass it some options, call the `swagger` API, and you are done!
 
 ```js
-const fastify = require('fastify')()
+import fastify from 'fastify'
 
-await fastify.register(require('@fastify/swagger'))
+const app = fastify()
 
-await fastify.register(require('@fastify/swagger-ui'), {
+await app.register(import('@fastify/swagger'))
+
+await app.register(import('@fastify/swagger-ui'), {
   routePrefix: '/documentation',
   uiConfig: {
     docExpansion: 'full',
@@ -52,7 +54,7 @@ await fastify.register(require('@fastify/swagger-ui'), {
   transformSpecificationClone: true
 })
 
-fastify.put('/some-route/:id', {
+app.put('/some-route/:id', {
   schema: {
     description: 'post some data',
     tags: ['user', 'code'],
@@ -102,7 +104,7 @@ fastify.put('/some-route/:id', {
   }
 }, (req, reply) => {})
 
-await fastify.ready()
+await app.ready()
 ```
 <a name="api"></a>
 ## API
