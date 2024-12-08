@@ -7,7 +7,7 @@ import {
   onRequestHookHandler,
   preHandlerHookHandler,
   RegisterOptions,
-} from 'fastify';
+} from 'fastify'
 
 /**
  * Swagger-UI Vendor Extensions
@@ -35,7 +35,7 @@ declare module 'fastify' {
   }
 }
 
-type FastifySwaggerUi = FastifyPluginCallback<fastifySwaggerUi.FastifySwaggerUiOptions>;
+type FastifySwaggerUi = FastifyPluginCallback<fastifySwaggerUi.FastifySwaggerUiOptions>
 
 declare namespace fastifySwaggerUi {
   export interface FastifySwaggerUiOptions extends Omit<RegisterOptions, 'prefix' | 'hooks'> {
@@ -101,7 +101,7 @@ declare namespace fastifySwaggerUi {
     target?: '_blank' | '_parent' | '_self' | '_top';
   }
 
-  type SupportedHTTPMethods = "get" | "put" | "post" | "delete" | "options" | "head" | "patch" | "trace";
+  type SupportedHTTPMethods = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'
 
   interface PluginsOptions {
     /**
@@ -114,14 +114,14 @@ declare namespace fastifySwaggerUi {
     pluginLoadType?: PluginLoadType;
   }
 
-  type PluginLoadType = 'legacy' | 'chain';
+  type PluginLoadType = 'legacy' | 'chain'
 
   type SorterLike =
-    | "alpha"
-    | "method"
+    | 'alpha'
+    | 'method'
     | {
       (name1: string, name2: string): number;
-    };
+    }
 
   interface Request {
     [prop: string]: any;
@@ -247,7 +247,7 @@ declare namespace fastifySwaggerUi {
      * (The user can always switch the rendering for a given model by clicking the
      * 'Model' and 'Example Value' links.)
      */
-    defaultModelRendering?: "example" | "model" | undefined;
+    defaultModelRendering?: 'example' | 'model' | undefined;
 
     /**
      * Controls the display of the request duration (in milliseconds) for "Try it out" requests.
@@ -259,7 +259,7 @@ declare namespace fastifySwaggerUi {
      * It can be 'list' (expands only the tags), 'full' (expands the tags and operations)
      * or 'none' (expands nothing).
      */
-    docExpansion?: "list" | "full" | "none" | undefined;
+    docExpansion?: 'list' | 'full' | 'none' | undefined;
 
     /**
      * If set, enables filtering.
@@ -332,7 +332,7 @@ declare namespace fastifySwaggerUi {
       /**
        * Highlight.js syntax coloring theme to use. (Only these 6 styles are available.)
        */
-      theme?: "agate" | "arta" | "monokai" | "nord" | "obsidian" | "tomorrow-night" | undefined;
+      theme?: 'agate' | 'arta' | 'monokai' | 'nord' | 'obsidian' | 'tomorrow-night' | undefined;
     } | undefined;
     /**
      * Controls whether the "Try it out" section should be enabled by default.
@@ -506,6 +506,6 @@ declare namespace fastifySwaggerUi {
   export const fastifySwaggerUi: FastifySwaggerUi
   export { fastifySwaggerUi as default }
 }
-declare function fastifySwaggerUi(...params: Parameters<FastifySwaggerUi>): ReturnType<FastifySwaggerUi>
+declare function fastifySwaggerUi (...params: Parameters<FastifySwaggerUi>): ReturnType<FastifySwaggerUi>
 
-export = fastifySwaggerUi;
+export = fastifySwaggerUi

@@ -1,14 +1,14 @@
-import fastify from "fastify";
+import fastify from 'fastify'
 
-import swaggerDefault, { fastifySwaggerUi, FastifySwaggerUiOptions } from "..";
-import * as fastifySwaggerStar from "..";
+import swaggerDefault, { fastifySwaggerUi, FastifySwaggerUiOptions } from '..'
+import * as fastifySwaggerStar from '..'
 
-const app = fastify();
+const app = fastify()
 const fastifySwaggerOptions: FastifySwaggerUiOptions = {
-  routePrefix: "/documentation",
-};
+  routePrefix: '/documentation',
+}
 
-app.register(swaggerDefault, fastifySwaggerOptions);
-app.register(fastifySwaggerUi, fastifySwaggerOptions);
-app.register(fastifySwaggerStar.default, fastifySwaggerOptions);
-app.register(fastifySwaggerStar.fastifySwaggerUi, fastifySwaggerOptions);
+app.register(swaggerDefault, fastifySwaggerOptions)
+app.register(fastifySwaggerUi, fastifySwaggerOptions)
+app.register(fastifySwaggerStar.default, fastifySwaggerOptions)
+app.register(fastifySwaggerStar.fastifySwaggerUi, fastifySwaggerOptions)
