@@ -1,26 +1,26 @@
-import fastify from 'fastify';
-import fastifySwagger from '@fastify/swagger';
-import fastifySwaggerUi from '..';
+import fastify from 'fastify'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '..'
 
 const app = fastify({
   http2: true
-});
+})
 
-app.register(fastifySwagger);
-app.register(fastifySwaggerUi);
-app.register(fastifySwaggerUi, {});
+app.register(fastifySwagger)
+app.register(fastifySwaggerUi)
+app.register(fastifySwaggerUi, {})
 app.register(fastifySwaggerUi, {
   routePrefix: '/documentation',
-});
+})
 
 app.put('/some-route/:id', {
   schema: {
     description: 'put me some data',
     tags: ['user', 'code'],
     summary: 'qwerty',
-    security: [{ apiKey: []}]
+    security: [{ apiKey: [] }]
   }
-}, (req, reply) => {});
+}, (req, reply) => {})
 
 app.get('/public/route', {
   schema: {
@@ -28,7 +28,7 @@ app.get('/public/route', {
     summary: 'qwerty',
     security: []
   }
-}, (_req, _reply) => {});
+}, (_req, _reply) => {})
 
 app
   .register(fastifySwaggerUi, {
