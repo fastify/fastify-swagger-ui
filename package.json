@@ -35,6 +35,19 @@
     {
       "name": "Matteo Collina",
       "email": "hello@matteocollina.com"
+    },
+    {
+      "name": "Manuel Spigolon",
+      "email": "behemoth89@gmail.com"
+    },
+    {
+      "name": "Aras Abbasi",
+      "email": "aras.abbasi@gmail.com"
+    },
+    {
+      "name": "Frazer Smith",
+      "email": "frazer.dev@icloud.com",
+      "url": "https://github.com/fdawgs"
     }
   ],
   "license": "MIT",
@@ -42,6 +55,16 @@
     "url": "https://github.com/fastify/fastify-swagger-ui/issues"
   },
   "homepage": "https://github.com/fastify/fastify-swagger-ui#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/fastify"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/fastify"
+    }
+  ],
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@fastify/basic-auth": "^6.0.0",
