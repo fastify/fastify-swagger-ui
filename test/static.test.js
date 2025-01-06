@@ -224,7 +224,7 @@ test('/documentation/non-existing-file calls custom NotFoundHandler', async (t) 
   const fastify = Fastify()
   await fastify.register(fastifySwagger, config)
   await fastify.register(fastifySwaggerUi)
-  fastify.setNotFoundHandler((request, reply) => {
+  fastify.setNotFoundHandler((_request, reply) => {
     reply.code(410).send()
   })
 

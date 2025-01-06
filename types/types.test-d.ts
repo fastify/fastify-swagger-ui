@@ -21,8 +21,8 @@ const initOAuth: FastifySwaggerInitOAuthOptions = {
   scopes: ['openid', 'profile', 'email', 'offline_access'],
 }
 const uiHooks: FastifySwaggerUiHooksOptions = {
-  onRequest: (request, reply, done) => { done() },
-  preHandler: (request, reply, done) => { done() },
+  onRequest: (_request, _reply, done) => { done() },
+  preHandler: (_request, _reply, done) => { done() },
 }
 
 app.register(fastifySwaggerUi)
@@ -43,7 +43,7 @@ app.get('/deprecated', {
     deprecated: true,
     hide: true
   }
-}, (req, reply) => {})
+}, () => {})
 
 app.put('/some-route/:id', {
   schema: {
@@ -58,7 +58,7 @@ app.put('/some-route/:id', {
       description: 'Find more info here'
     },
   }
-}, (req, reply) => {})
+}, () => {})
 
 app.put('/image.png', {
   schema: {
@@ -73,7 +73,7 @@ app.put('/image.png', {
       }
     }
   }
-}, async (req, reply) => {
+}, async (_req, reply) => {
   reply
     .type('image/png')
     .send(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAgSURBVBhXY/iPCkB8BgYkEiSIBICiCCEoB0SBwf///wGHRzXLSklJLQAAAABJRU5ErkJggg==', 'base64'))
@@ -89,7 +89,7 @@ app.get('/public/route', {
   links: {
     200: { 'some-route': { operationId: 'opeId' } }
   }
-}, (req, reply) => {})
+}, () => {})
 
 app
   .register(fastifySwaggerUi, {

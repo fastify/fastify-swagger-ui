@@ -197,7 +197,7 @@ test('/v1/foobar should display index html', async (t) => {
   t.plan(4)
   const fastify = Fastify()
 
-  fastify.register(async function (fastify, options) {
+  fastify.register(async function (fastify) {
     await fastify.register(fastifySwagger, swaggerOption)
     await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar', noRedirect: true })
 
@@ -223,7 +223,7 @@ test('/v1/foobar/ should display index html', async (t) => {
   t.plan(4)
   const fastify = Fastify()
 
-  fastify.register(async function (fastify, options) {
+  fastify.register(async function (fastify) {
     await fastify.register(fastifySwagger, swaggerOption)
     await fastify.register(fastifySwaggerUi, { routePrefix: '/foobar' })
 
@@ -476,7 +476,7 @@ test('/documentation/:myfile should return 404 in dynamic mode', async (t) => {
 test('/documentation/:myfile should run custom NotFoundHandler in dynamic mode', async (t) => {
   t.plan(1)
   const fastify = Fastify()
-  const notFoundHandler = function (req, reply) {
+  const notFoundHandler = function (_req, reply) {
     reply.code(410).send()
   }
   fastify.setNotFoundHandler(notFoundHandler)

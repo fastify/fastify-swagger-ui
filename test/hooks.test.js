@@ -9,7 +9,7 @@ const fastifySwaggerUi = require('../index')
 const { swaggerOption, schemaBody } = require('../examples/options')
 
 const authOptions = {
-  validate (username, password, req, reply, done) {
+  validate (username, password, _req, _reply, done) {
     if (username === 'admin' && password === 'admin') {
       done()
     } else {
@@ -116,7 +116,7 @@ test('catch all added schema', async t => {
   await fastify.register(fastifySwagger, {
     openapi: {},
     refResolver: {
-      buildLocalReference: (json, baseUri, fragment, i) => {
+      buildLocalReference: (json, _baseUri, _fragment, i) => {
         return json.$id || `def-${i}`
       }
     }
