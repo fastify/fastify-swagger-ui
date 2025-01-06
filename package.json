@@ -30,7 +30,7 @@
     "serve",
     "static"
   ],
-  "author": "Tomas Della Vedova - @delvedor (http://delved.org)",
+  "author": "Aras Abbasi <aras.abbasi@gmail.com>",
   "contributors": [
     {
       "name": "Matteo Collina",
@@ -41,8 +41,9 @@
       "email": "behemoth89@gmail.com"
     },
     {
-      "name": "Aras Abbasi",
-      "email": "aras.abbasi@gmail.com"
+      "name": "KaKa Ng",
+      "email": "kaka@kakang.dev",
+      "url": "https://github.com/climba03003"
     },
     {
       "name": "Frazer Smith",
