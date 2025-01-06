@@ -20,7 +20,7 @@ app.put('/some-route/:id', {
     summary: 'qwerty',
     security: [{ apiKey: [] }]
   }
-}, (req, reply) => {})
+}, () => {})
 
 app.get('/public/route', {
   schema: {
@@ -28,7 +28,7 @@ app.get('/public/route', {
     summary: 'qwerty',
     security: []
   }
-}, (_req, _reply) => {})
+}, () => {})
 
 app
   .register(fastifySwaggerUi, {

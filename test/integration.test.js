@@ -33,7 +33,7 @@ test('fastify will response swagger csp', async (t) => {
   })
 
   // route for testing CSP headers
-  fastify.get('/', (req, reply) => {
+  fastify.get('/', (_req, reply) => {
     reply.send({
       foo: 'bar'
     })
