@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 import {
   FastifyPluginCallback,
   FastifyReply,
@@ -156,6 +154,8 @@ declare namespace fastifySwaggerUi {
   interface Indexable {
     [index: string]: any;
   }
+
+  type HTMLElement = unknown // nodejs does not have a DOM, and should not pollute the global types by referencing lib.dom.d.ts
 
   export type FastifySwaggerUiConfigOptions = {
     // Core
