@@ -37,8 +37,6 @@ const fastifySwaggerOptions: FastifySwaggerUiOptions = {
   indexPrefix: '/custom-prefix'
 }
 app.register(fastifySwaggerUi, fastifySwaggerOptions)
-app.register(fastifySwaggerUi, { uiConfig: { domNode: null } })
-app.register(fastifySwaggerUi, { uiConfig: { domNode: {} } })
 
 app.get('/deprecated', {
   schema: {

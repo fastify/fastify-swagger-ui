@@ -155,8 +155,6 @@ declare namespace fastifySwaggerUi {
     [index: string]: any;
   }
 
-  type HTMLElement = unknown // nodejs does not have a DOM, and should not pollute the global types by referencing lib.dom.d.ts
-
   export type FastifySwaggerUiConfigOptions = {
     // Core
 
@@ -166,14 +164,9 @@ declare namespace fastifySwaggerUi {
     configUrl?: string | undefined;
 
     /**
-     * REQUIRED if domNode is not provided. The ID of a DOM element inside which SwaggerUI will put its user interface.
+     * The ID of a DOM element inside which SwaggerUI will put its user interface.
      */
     dom_id?: string | undefined;
-
-    /**
-     *  REQUIRED if dom_id is not provided. The HTML DOM element inside which SwaggerUI will put its user interface. Overrides dom_id.
-     */
-    domNode?: HTMLElement | null | undefined;
 
     /**
      * A JavaScript object describing the OpenAPI definition. When used, the url parameter will not be parsed. This is useful for testing manually-generated definitions without hosting them
