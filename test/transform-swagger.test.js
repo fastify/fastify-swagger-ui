@@ -132,10 +132,7 @@ test('transformSpecificationClone false should not deepclone fastify.swagger() /
     url: '/documentation/json'
   })
 
-  const swagger = fastify.swagger()
-  Object.getOwnPropertySymbols(swagger.definitions.User).forEach((symbol) => delete swagger.definitions.User[symbol])
-
-  t.assert.deepStrictEqual(swagger, JSON.parse(res.body))
+  t.assert.deepStrictEqual(fastify.swagger(), JSON.parse(res.body))
 })
 
 test('transformSpecification should modify the yaml', async (t) => {
