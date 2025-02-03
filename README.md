@@ -1,7 +1,7 @@
 # @fastify/swagger-ui
 
 [![NPM version](https://img.shields.io/npm/v/@fastify/swagger-ui.svg?style=flat)](https://www.npmjs.com/package/@fastify/swagger-ui)
-[![CI](https://github.com/fastify/fastify-swagger-ui/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fastify/fastify-swagger-ui/actions/workflows/ci.yml)
+[![CI](https://github.com/fastify/fastify-swagger-ui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fastify/fastify-swagger-ui/actions/workflows/ci.yml)
 [![neostandard javascript style](https://img.shields.io/badge/code_style-neostandard-brightgreen?style=flat)](https://github.com/neostandard/neostandard)
 
 A Fastify plugin for serving [Swagger UI](https://swagger.io/tools/swagger-ui/).
