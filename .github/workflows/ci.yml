@@ -14,14 +14,14 @@ on:
       - 'docs/**'
       - '*.md'
 
+permissions:
+  contents: read
+
 jobs:
   e2e:
     uses: ./.github/workflows/playwright.yml
 
   test:
-    permissions:
-      contents: write
-      pull-requests: write
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
     needs: e2e
     with:
