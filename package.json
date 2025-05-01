@@ -82,7 +82,7 @@
     "neostandard": "^0.12.0",
     "qs": "^6.12.1",
     "swagger-ui-dist": "5.20.2",
-    "tsd": "^0.31.0"
+    "tsd": "^0.32.0"
   },
   "dependencies": {
     "@fastify/static": "^8.0.0",
