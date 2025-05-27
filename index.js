@@ -10,19 +10,19 @@ async function fastifySwaggerUi (fastify, opts) {
 
   // if no logo is provided, read default static logo
   let logoContent = opts.logo
-  if (logoContent == null) {
+  if (logoContent === undefined) {
     const bufferLogoContent = await fsPromises.readFile(path.join(__dirname, './static/logo.svg'))
     logoContent = { type: 'image/svg+xml', content: bufferLogoContent }
   }
 
   await fastify.register(require('./lib/routes'), {
+    ...opts,
     prefix: opts.routePrefix || '/documentation',
     uiConfig: opts.uiConfig || {},
     initOAuth: opts.initOAuth || {},
     hooks: opts.uiHooks,
     theme: opts.theme || {},
-    logo: logoContent,
-    ...opts
+    logo: logoContent
   })
 }
 
