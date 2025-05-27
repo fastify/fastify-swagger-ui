@@ -623,7 +623,7 @@ test('/api/v1/docs should display index html with correct asset urls', async (t)
   t.plan(13)
   const fastify = Fastify()
   await fastify.register(fastifySwagger, swaggerOption)
-  await fastify.register(fastifySwaggerUi, { prefix: '/api/v1/docs', theme: { js: [{ filename: 'theme-js.js' }] } })
+  await fastify.register(fastifySwaggerUi, { routePrefix: '/api/v1/docs', theme: { js: [{ filename: 'theme-js.js' }] } })
 
   const res = await fastify.inject({
     method: 'GET',
@@ -749,4 +749,22 @@ test('/docs/ should display index html with correct asset urls when documentatio
   t.assert.strictEqual(res.payload.includes('src="./static/theme/theme-js.js"'), true)
   t.assert.strictEqual(res.payload.includes('href="./index.css"'), false)
   t.assert.strictEqual(res.payload.includes('src="./theme/theme-js.js"'), false)
+})
+
+test('should ignore prefix when register plugin', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { routePrefix: '/v1/documentation', prefix: '/' })
+
+  fastify.get('/', () => {})
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/v1/documentation'
+  })
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.deepStrictEqual(res.headers.location, undefined)
+  t.assert.deepStrictEqual(typeof res.payload, 'string')
+  t.assert.deepStrictEqual('text/html; charset=utf-8', res.headers['content-type'])
 })
