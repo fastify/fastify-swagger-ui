@@ -84,7 +84,7 @@
     "tsd": "^0.33.0"
   },
   "dependencies": {
-    "@fastify/static": "^8.0.0",
+    "@fastify/static": "^9.0.0",
     "fastify-plugin": "^5.0.0",
     "openapi-types": "^12.1.3",
     "rfdc": "^1.3.1",
