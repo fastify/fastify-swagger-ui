@@ -3,3 +3,6 @@
 
 # Require Unix line endings
 * text eol=lf
+
+# Binary files should never be modified by autocrlf
+*.png binary
