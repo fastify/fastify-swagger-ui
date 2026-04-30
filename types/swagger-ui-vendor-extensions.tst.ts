@@ -1,11 +1,11 @@
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types'
-import { expectAssignable } from 'tsd'
+import { type OpenAPIV2, type OpenAPIV3 } from 'openapi-types'
+import { expect } from 'tstyche'
 
-expectAssignable<OpenAPIV3.Document>({
+expect({
   openapi: '3.0.0',
   info: {
     version: '1.0.0',
-    title: 'Test OpenApiv3 specification',
+    title: 'Test OpenApiv3 specification'
   },
   components: {
     securitySchemes: {
@@ -15,16 +15,16 @@ expectAssignable<OpenAPIV3.Document>({
         flows: {
           implicit: {
             authorizationUrl: 'http.../login/oauth/authorize',
-            scopes: {},
-          },
-        },
-      },
+            scopes: {}
+          }
+        }
+      }
     }
   },
   paths: {}
-})
+} as OpenAPIV3.Document).type.toBeAssignableTo<OpenAPIV3.Document>()
 
-expectAssignable<OpenAPIV2.Document>({
+expect({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -37,34 +37,34 @@ expectAssignable<OpenAPIV2.Document>({
       authorizationUrl: 'https://example.com/oauth/authorize',
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2ApplicationFlow: {
       type: 'oauth2',
       flow: 'application',
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2ImplicitFlow: {
       type: 'oauth2',
       flow: 'implicit',
       authorizationUrl: 'https://example.com/oauth/authorize',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2PasswordFlow: {
       type: 'oauth2',
       flow: 'password',
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
-    },
+      scopes: {}
+    }
   },
   paths: {}
-})
+} as OpenAPIV2.Document).type.toBeAssignableTo<OpenAPIV2.Document>()
 
-expectAssignable<OpenAPIV2.Document>({
+expect({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -74,8 +74,7 @@ expectAssignable<OpenAPIV2.Document>({
     '/users/{userId}': {
       get: {
         summary: 'Gets a user by ID.',
-        responses: {
-        },
+        responses: {},
         parameters: [
           {
             in: 'path',
@@ -89,7 +88,8 @@ expectAssignable<OpenAPIV2.Document>({
             in: 'query',
             name: 'offset',
             type: 'integer',
-            description: 'The number of items to skip before starting to collect the result set.',
+            description:
+              'The number of items to skip before starting to collect the result set.',
             'x-example': 1337
           },
           {
@@ -110,4 +110,4 @@ expectAssignable<OpenAPIV2.Document>({
       }
     }
   }
-})
+} as OpenAPIV2.Document).type.toBeAssignableTo<OpenAPIV2.Document>()
