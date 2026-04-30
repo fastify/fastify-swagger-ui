@@ -1,30 +1,32 @@
 import { type OpenAPIV2, type OpenAPIV3 } from 'openapi-types'
 import { expect } from 'tstyche'
+import '.'
 
-expect({
-  openapi: '3.0.0',
-  info: {
-    version: '1.0.0',
-    title: 'Test OpenApiv3 specification'
-  },
-  components: {
-    securitySchemes: {
-      myAuth: {
-        type: 'oauth2',
-        'x-tokenName': 'id_token',
-        flows: {
-          implicit: {
-            authorizationUrl: 'http.../login/oauth/authorize',
-            scopes: {}
+expect<OpenAPIV3.Document>()
+  .type.toBeAssignableFrom({
+    openapi: '3.0.0',
+    info: {
+      version: '1.0.0',
+      title: 'Test OpenApiv3 specification'
+    },
+    components: {
+      securitySchemes: {
+        myAuth: {
+          type: 'oauth2' as const,
+          'x-tokenName': 'id_token',
+          flows: {
+            implicit: {
+              authorizationUrl: 'http.../login/oauth/authorize',
+              scopes: {}
+            }
           }
         }
       }
-    }
-  },
-  paths: {}
-} as OpenAPIV3.Document).type.toBeAssignableTo<OpenAPIV3.Document>()
+    },
+    paths: {}
+  })
 
-expect({
+expect<OpenAPIV2.Document>().type.toBeAssignableFrom({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -32,39 +34,39 @@ expect({
   },
   securityDefinitions: {
     OAuth2AccessCodeFlow: {
-      type: 'oauth2',
-      flow: 'accessCode',
+      type: 'oauth2' as const,
+      flow: 'accessCode' as const,
       authorizationUrl: 'https://example.com/oauth/authorize',
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
       scopes: {}
     },
     OAuth2ApplicationFlow: {
-      type: 'oauth2',
-      flow: 'application',
+      type: 'oauth2' as const,
+      flow: 'application' as const,
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
       scopes: {}
     },
     OAuth2ImplicitFlow: {
-      type: 'oauth2',
-      flow: 'implicit',
+      type: 'oauth2' as const,
+      flow: 'implicit' as const,
       authorizationUrl: 'https://example.com/oauth/authorize',
       'x-tokenName': 'id_token',
       scopes: {}
     },
     OAuth2PasswordFlow: {
-      type: 'oauth2',
-      flow: 'password',
+      type: 'oauth2' as const,
+      flow: 'password' as const,
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
       scopes: {}
     }
   },
   paths: {}
-} as OpenAPIV2.Document).type.toBeAssignableTo<OpenAPIV2.Document>()
+})
 
-expect({
+expect<OpenAPIV2.Document>().type.toBeAssignableFrom({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -79,7 +81,7 @@ expect({
           {
             in: 'path',
             name: 'userId',
-            type: 'integer',
+            type: 'integer' as const,
             required: true,
             description: 'Numeric ID of the user to get.',
             'x-example': 'BADC0FFEE'
@@ -87,7 +89,7 @@ expect({
           {
             in: 'query',
             name: 'offset',
-            type: 'integer',
+            type: 'integer' as const,
             description:
               'The number of items to skip before starting to collect the result set.',
             'x-example': 1337
@@ -95,14 +97,14 @@ expect({
           {
             in: 'header',
             name: 'X-Request-ID',
-            type: 'string',
+            type: 'string' as const,
             required: true,
             'x-example': 'wget'
           },
           {
             in: 'formData',
             name: 'name',
-            type: 'string',
+            type: 'string' as const,
             description: "A person's name.",
             'x-example': 'John Doe'
           }
@@ -110,4 +112,4 @@ expect({
       }
     }
   }
-} as OpenAPIV2.Document).type.toBeAssignableTo<OpenAPIV2.Document>()
+})
