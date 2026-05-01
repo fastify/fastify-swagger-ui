@@ -1,13 +1,15 @@
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import { expectType } from 'tsd'
+import { expect } from 'tstyche'
 import fastifySwaggerUi, {
   FastifySwaggerUiOptions,
   FastifySwaggerInitOAuthOptions,
   FastifySwaggerUiConfigOptions,
   FastifySwaggerUiHooksOptions,
 } from '..'
+import '@fastify/swagger'
 
 const app = fastify()
+
 const uiConfig: FastifySwaggerUiConfigOptions = {
   deepLinking: true,
   defaultModelsExpandDepth: -1,
@@ -102,7 +104,8 @@ app
     initOAuth
   })
   .ready((err) => {
-    expectType<Error | null>(err)
+    expect(err).type.toBe<Error | null>()
+    expect(app.swagger).type.toBeAssignableTo<Function>()
     app.swagger()
   })
 
@@ -138,9 +141,9 @@ app.register(fastifySwaggerUi, {
 app.register(fastifySwaggerUi, {
   transformSpecificationClone: true,
   transformSpecification: (swaggerObj, request, reply) => {
-    expectType<FastifyRequest>(request)
-    expectType<FastifyReply>(reply)
-    expectType<Readonly<Record<string, any>>>(swaggerObj)
+    expect(request).type.toBeAssignableTo<FastifyRequest>()
+    expect(reply).type.toBeAssignableTo<FastifyReply>()
+    expect(swaggerObj).type.toBeAssignableTo<Readonly<Record<string, any>>>()
     return swaggerObj
   }
 })

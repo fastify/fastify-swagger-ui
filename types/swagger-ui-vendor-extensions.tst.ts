@@ -1,30 +1,32 @@
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types'
-import { expectAssignable } from 'tsd'
+import { type OpenAPIV2, type OpenAPIV3 } from 'openapi-types'
+import { expect } from 'tstyche'
+import '.'
 
-expectAssignable<OpenAPIV3.Document>({
-  openapi: '3.0.0',
-  info: {
-    version: '1.0.0',
-    title: 'Test OpenApiv3 specification',
-  },
-  components: {
-    securitySchemes: {
-      myAuth: {
-        type: 'oauth2',
-        'x-tokenName': 'id_token',
-        flows: {
-          implicit: {
-            authorizationUrl: 'http.../login/oauth/authorize',
-            scopes: {},
-          },
-        },
-      },
-    }
-  },
-  paths: {}
-})
+expect<OpenAPIV3.Document>()
+  .type.toBeAssignableFrom({
+    openapi: '3.0.0',
+    info: {
+      version: '1.0.0',
+      title: 'Test OpenApiv3 specification'
+    },
+    components: {
+      securitySchemes: {
+        myAuth: {
+          type: 'oauth2' as const,
+          'x-tokenName': 'id_token',
+          flows: {
+            implicit: {
+              authorizationUrl: 'http.../login/oauth/authorize',
+              scopes: {}
+            }
+          }
+        }
+      }
+    },
+    paths: {}
+  })
 
-expectAssignable<OpenAPIV2.Document>({
+expect<OpenAPIV2.Document>().type.toBeAssignableFrom({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -32,39 +34,39 @@ expectAssignable<OpenAPIV2.Document>({
   },
   securityDefinitions: {
     OAuth2AccessCodeFlow: {
-      type: 'oauth2',
-      flow: 'accessCode',
+      type: 'oauth2' as const,
+      flow: 'accessCode' as const,
       authorizationUrl: 'https://example.com/oauth/authorize',
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2ApplicationFlow: {
-      type: 'oauth2',
-      flow: 'application',
+      type: 'oauth2' as const,
+      flow: 'application' as const,
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2ImplicitFlow: {
-      type: 'oauth2',
-      flow: 'implicit',
+      type: 'oauth2' as const,
+      flow: 'implicit' as const,
       authorizationUrl: 'https://example.com/oauth/authorize',
       'x-tokenName': 'id_token',
-      scopes: { }
+      scopes: {}
     },
     OAuth2PasswordFlow: {
-      type: 'oauth2',
-      flow: 'password',
+      type: 'oauth2' as const,
+      flow: 'password' as const,
       tokenUrl: 'https://example.com/oauth/token',
       'x-tokenName': 'id_token',
-      scopes: { }
-    },
+      scopes: {}
+    }
   },
   paths: {}
 })
 
-expectAssignable<OpenAPIV2.Document>({
+expect<OpenAPIV2.Document>().type.toBeAssignableFrom({
   swagger: '2.0.0',
   info: {
     title: 'Test OpenApiv2 specification',
@@ -74,13 +76,12 @@ expectAssignable<OpenAPIV2.Document>({
     '/users/{userId}': {
       get: {
         summary: 'Gets a user by ID.',
-        responses: {
-        },
+        responses: {},
         parameters: [
           {
             in: 'path',
             name: 'userId',
-            type: 'integer',
+            type: 'integer' as const,
             required: true,
             description: 'Numeric ID of the user to get.',
             'x-example': 'BADC0FFEE'
@@ -88,21 +89,22 @@ expectAssignable<OpenAPIV2.Document>({
           {
             in: 'query',
             name: 'offset',
-            type: 'integer',
-            description: 'The number of items to skip before starting to collect the result set.',
+            type: 'integer' as const,
+            description:
+              'The number of items to skip before starting to collect the result set.',
             'x-example': 1337
           },
           {
             in: 'header',
             name: 'X-Request-ID',
-            type: 'string',
+            type: 'string' as const,
             required: true,
             'x-example': 'wget'
           },
           {
             in: 'formData',
             name: 'name',
-            type: 'string',
+            type: 'string' as const,
             description: "A person's name.",
             'x-example': 'John Doe'
           }
