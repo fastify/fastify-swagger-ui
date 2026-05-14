@@ -299,14 +299,6 @@ declare namespace fastifySwaggerUi {
     tagsSorter?: SorterLike | undefined;
 
     /**
-     * When enabled, sanitizer will leave style, class and data-* attributes untouched
-     * on all HTML Elements declared inside markdown strings.
-     * This parameter is Deprecated and will be removed in 4.0.0.
-     * @deprecated
-     */
-    useUnsafeMarkdown?: boolean | undefined;
-
-    /**
      * Provides a mechanism to be notified when Swagger UI has finished rendering a newly provided definition.
      */
     onComplete?: (() => any) | undefined;
