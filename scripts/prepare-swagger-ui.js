@@ -15,6 +15,7 @@ const filesToCopy = [
   'index.html',
   'index.css',
   'oauth2-redirect.html',
+  'oauth2-redirect.js',
   'swagger-ui-bundle.js',
   'swagger-ui-standalone-preset.js',
   'swagger-ui.css',

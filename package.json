@@ -1,6 +1,6 @@
 {
   "name": "@fastify/swagger-ui",
-  "version": "5.2.3",
+  "version": "6.1.0",
   "description": "Serve Swagger-ui for Fastify",
   "main": "index.js",
   "type": "commonjs",
@@ -15,7 +15,7 @@
     "test:e2e:command": "node ./examples/example-e2e.js",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
-    "typescript": "tsd",
+    "typescript": "tstyche",
     "unit": "c8 --100 node --test"
   },
   "repository": {
@@ -70,29 +70,25 @@
     "@apidevtools/swagger-parser": "^12.0.0",
     "@fastify/basic-auth": "^6.0.0",
     "@fastify/helmet": "^13.0.0",
-    "@fastify/pre-commit": "^2.1.0",
     "@fastify/swagger": "^9.0.0",
     "@playwright/test": "^1.43.1",
-    "@types/node": "^24.0.10",
+    "@types/node": "^26.0.0",
     "ajv": "^8.12.0",
-    "c8": "^10.1.2",
+    "c8": "^11.0.0",
     "eslint": "^9.17.0",
     "fastify": "^5.0.0",
     "fs-extra": "^11.2.0",
-    "neostandard": "^0.12.0",
+    "neostandard": "^0.13.0",
     "qs": "^6.12.1",
-    "swagger-ui-dist": "5.27.1",
-    "tsd": "^0.32.0"
+    "swagger-ui-dist": "5.32.6",
+    "tstyche": "^7.0.0"
   },
   "dependencies": {
-    "@fastify/static": "^8.0.0",
-    "fastify-plugin": "^5.0.0",
+    "@fastify/static": "^9.1.2",
+    "fastify-plugin": "^6.0.0",
     "openapi-types": "^12.1.3",
     "rfdc": "^1.3.1",
     "yaml": "^2.4.1"
-  },
-  "tsd": {
-    "directory": "types"
   },
   "pkg": {
     "assets": [
@@ -101,9 +97,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "pre-commit": [
-    "lint",
-    "test"
-  ]
+  }
 }
