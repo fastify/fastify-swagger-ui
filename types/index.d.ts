@@ -48,6 +48,13 @@ declare namespace fastifySwaggerUi {
      */
     indexPrefix?: string;
     /**
+     * Trust the `X-Forwarded-Prefix` header to compute asset URLs when behind a reverse proxy
+     * that strips a path prefix. Only enable this when the server is genuinely behind a proxy
+     * that controls this header.
+     * @default false
+     */
+    trustProxy?: boolean;
+    /**
      * Make it explicit that this plugin overrides the prefix value
      */
     prefix?: never;
