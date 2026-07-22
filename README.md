@@ -128,6 +128,7 @@ await app.ready()
  | uiHooks              | {}              | Additional hooks for the documentation's routes. You can provide the `onRequest` and `preHandler` hooks with the same [route's options](https://fastify.dev/docs/latest/Reference/Routes/#routes-options) interface.                              |
  | theme                | {}              | Add custom JavaScript and CSS to the Swagger UI web page                                                                                                                                                                                          |
  | logLevel             | info            | Allow to define route log level.                                                                                                                                                                                                                  |
+ | decorator            | swagger         | Overrides the Fastify decorator.                                                                                                                                                                                                                  |
 
 The plugin will expose the documentation with the following APIs:
 
