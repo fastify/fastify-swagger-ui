@@ -10,9 +10,11 @@ const swaggerCSP = require('../static/csp.json')
 test('fastify will response swagger csp', async (t) => {
   t.plan(1)
 
-  const scriptCSP = swaggerCSP.script.length > 0 ? ` ${swaggerCSP.script.join(' ')}` : ''
-  const styleCSP = swaggerCSP.style.length > 0 ? ` ${swaggerCSP.style.join(' ')}` : ''
-  const csp = `default-src 'self';img-src 'self' data: validator.swagger.io;script-src 'self'${scriptCSP};style-src 'self' https:${styleCSP};base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests`
+  const scriptCSP =
+    swaggerCSP.script.length > 0 ? ` ${swaggerCSP.script.join(' ')}` : ''
+  const styleCSP =
+    swaggerCSP.style.length > 0 ? ` ${swaggerCSP.style.join(' ')}` : ''
+  const csp = `default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data: validator.swagger.io;object-src 'none';script-src 'self'${scriptCSP};script-src-attr 'none';style-src 'self' https:${styleCSP};upgrade-insecure-requests`
 
   const fastify = Fastify()
 
