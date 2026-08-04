@@ -83,6 +83,11 @@ declare namespace fastifySwaggerUi {
      * @default false
      */
     validatorUrl?: string | false
+
+    /** 
+     * Overrides the Fastify decorator used to retrive the schema.
+     * */
+    decorator?: 'swagger' | (string & Record<never, never>);
   }
 
   type FastifySwaggerUiTheme = {
