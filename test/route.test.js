@@ -616,6 +616,68 @@ testCases.forEach(([prefix, pluginPrefix]) => {
   })
 })
 
+const forwardedPrefixCases = [
+  ['honors the header when trustProxy is enabled', { trustProxy: true }, { 'x-forwarded-prefix': '/service' }, '/service/documentation'],
+  ['ignores the header when trustProxy is not enabled', {}, { 'x-forwarded-prefix': '/service' }, '/documentation'],
+  ['takes precedence over indexPrefix when trustProxy is enabled', { trustProxy: true, indexPrefix: '/static-prefix' }, { 'x-forwarded-prefix': '/service' }, '/service/documentation'],
+  ['falls back when trustProxy is enabled but the header is absent', { trustProxy: true }, {}, '/documentation']
+]
+forwardedPrefixCases.forEach(([description, pluginOpts, headers, expectedPrefix]) => {
+  test(`x-forwarded-prefix header ${description}`, async (t) => {
+    t.plan(5)
+    const fastify = Fastify()
+    await fastify.register(fastifySwagger, swaggerOption)
+    await fastify.register(fastifySwaggerUi, { ...pluginOpts, theme: { js: [{ filename: 'theme-js.js' }] } })
+
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation',
+      headers
+    })
+    t.assert.equal(res.statusCode, 200)
+    assertIndexUrls(t, res.payload, expectedPrefix)
+  })
+})
+
+const maliciousForwardedPrefixes = [
+  '//evil.com',
+  'http://evil.com',
+  '<script>alert(1)</script>',
+  '/foo"><script>alert(1)</script>'
+]
+maliciousForwardedPrefixes.forEach((value) => {
+  test(`should ignore unsafe x-forwarded-prefix header value: ${value}`, async (t) => {
+    t.plan(6)
+    const fastify = Fastify()
+    await fastify.register(fastifySwagger, swaggerOption)
+    await fastify.register(fastifySwaggerUi, { trustProxy: true, theme: { js: [{ filename: 'theme-js.js' }] } })
+
+    const res = await fastify.inject({
+      method: 'GET',
+      url: '/documentation',
+      headers: { 'x-forwarded-prefix': value }
+    })
+    t.assert.equal(res.statusCode, 200)
+    t.assert.equal(res.payload.includes(value), false)
+    assertIndexUrls(t, res.payload, '/documentation')
+  })
+})
+
+test('should honor x-forwarded-prefix header on the /static/index.html redirect when trustProxy is enabled', async (t) => {
+  t.plan(2)
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, { trustProxy: true, theme: { js: [{ filename: 'theme-js.js' }] } })
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/static/index.html',
+    headers: { 'x-forwarded-prefix': '/service' }
+  })
+  t.assert.equal(res.statusCode, 302)
+  t.assert.equal(res.headers.location, '/service/documentation/')
+})
+
 /**
  * This emulates when the server is inside an NGINX application that routes by path
  */
