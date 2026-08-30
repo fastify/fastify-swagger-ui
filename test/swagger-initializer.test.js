@@ -1,9 +1,51 @@
 'use strict'
 
 const { test } = require('node:test')
+const vm = require('node:vm')
 const Fastify = require('fastify')
 const fastifySwagger = require('@fastify/swagger')
 const fastifySwaggerUi = require('../index')
+const swaggerInitializer = require('../lib/swagger-initializer')
+
+test('resolves spec and OAuth URLs when documentation URL has query parameters', (t) => {
+  t.plan(2)
+
+  const captured = {}
+  const SwaggerUIBundle = function (config) {
+    captured.config = config
+    return { initOAuth () {} }
+  }
+  SwaggerUIBundle.presets = { apis: {} }
+  SwaggerUIBundle.plugins = { DownloadUrl: {} }
+
+  const window = {
+    location: {
+      href: 'https://example.test/documentation?tab=overview'
+    }
+  }
+  const document = {
+    createElement () {
+      let href
+      return {
+        set href (value) {
+          href = new URL(value).href
+        },
+        get href () {
+          return href
+        }
+      }
+    }
+  }
+
+  vm.runInNewContext(
+    swaggerInitializer({ uiConfig: {}, initOAuth: {}, logo: null, validatorUrl: false }),
+    { window, document, SwaggerUIBundle, SwaggerUIStandalonePreset: {}, URL, Promise }
+  )
+  window.onload()
+
+  t.assert.strictEqual(captured.config.url, 'https://example.test/documentation/json')
+  t.assert.strictEqual(captured.config.oauth2RedirectUrl, 'https://example.test/documentation/static/oauth2-redirect.html')
+})
 
 test('/documentation/static/swagger-initializer.js should have default uiConfig', async (t) => {
   t.plan(2)
