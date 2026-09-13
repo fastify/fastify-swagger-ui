@@ -116,10 +116,10 @@ await app.ready()
 
  | Option             | Default         | Description                                                                                                                                                                                                                                       |
  | ------------------ | --------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- | baseDir              | undefined       | Specify the directory where all spec files that are included in the main one using $ref will be located. By default, this is the directory where the main spec file is located. Provided value should be an absolute path without trailing slash. |
+ | baseDir              | undefined       | Directory from which the Swagger UI static assets (served under `<routePrefix>/static/`) are loaded, instead of the `static` folder shipped with this plugin. Any other file in that directory is also served relative to `routePrefix`, e.g. spec files referenced via `$ref`. When not set, only the bundled Swagger UI assets are served. Provided value should be an absolute path without trailing slash. See [Bundling](#bundling). |
  | initOAuth            | {}              | Configuration options for [Swagger UI initOAuth](https://swagger.io/docs/open-source-tools/swagger-ui/usage/oauth2/).                                                                                                                             |
  | routePrefix          | '/documentation' | Overwrite the default Swagger UI route prefix.                                                                                                                                                                                                    |
- | indexPrefix          | '' | Add an additional prefix. This is for when the Fastify server is behind path based routing.  ex. NGINX                                                                                                                                            |
+ | indexPrefix          | '' | External path prefix added to the asset links in the index page, for when the Fastify server is behind path based routing (e.g. NGINX). See [Running behind a reverse proxy](#running-behind-a-reverse-proxy).                                    |
  | staticCSP            | false           | Enable CSP header for static resources.                                                                                                                                                                                                           |
  | transformStaticCSP   | undefined       | Synchronous function to transform CSP header for static resources if the header has been previously set.                                                                                                                                          |
  | transformSpecification     | undefined       | Synchronous function to transform the swagger document.                                                                                                                                                                                           |
@@ -163,6 +163,37 @@ await fastify.register(require('@fastify/swagger-ui'), {
   }
 })
 ```
+
+##### Multiple specifications
+
+Swagger UI can show a "Select a definition" dropdown to switch between several specifications. Pass the [`urls`](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md) option through `uiConfig`:
+
+```js
+await fastify.register(require('@fastify/swagger-ui'), {
+  uiConfig: {
+    urls: [
+      { url: '/documentation/json', name: 'Main API' },
+      { url: '/documentation/openapi.yaml', name: 'Other API' }
+    ]
+  }
+})
+```
+
+Each entry is fetched by the browser, so every URL must be reachable from the client (e.g. the spec exposed by this plugin, a file served from `baseDir`, another Fastify route or an external host). Prefer absolute paths: relative ones (e.g. `./json`) are resolved against the page URL, so they only work when the documentation is opened with a trailing slash (`/documentation/`).
+
+The dropdown is rendered by the topbar of the default `StandaloneLayout`, so it is not shown if `uiConfig.layout` is set to `BaseLayout`. Use `urls.primaryName` to choose which definition is selected on load:
+
+```js
+uiConfig: {
+  urls: [
+    { url: '/documentation/json', name: 'Main API' },
+    { url: '/documentation/openapi.yaml', name: 'Other API' }
+  ],
+  'urls.primaryName': 'Other API'
+}
+```
+
+The URLs are used as-is: if the server is exposed under an external path prefix (see [Running behind a reverse proxy](#running-behind-a-reverse-proxy)), include that prefix in each `url` (e.g. `/service/documentation/json`).
 
 #### transformSpecification
 
@@ -334,6 +365,15 @@ await fastify.register('@fastify/swagger-ui', {
 ```
 
 Note that this behavior is disabled by default in `@fastify/swagger-ui`.
+
+#### Running behind a reverse proxy
+
+When Fastify sits behind a proxy that strips a path prefix (e.g. NGINX serving your app under `/service` and forwarding `/service/documentation` as `/documentation`), the absolute links to the static assets rendered in the index page will not include the external prefix.
+
+There are two ways to handle this:
+
+- open the documentation with a trailing slash (`/service/documentation/`): in this case the asset links are relative and work as-is;
+- set `indexPrefix` to the external prefix (`indexPrefix: '/service'`), so the generated links become `/service/documentation/static/...`.
 
 ### Bundling
 
