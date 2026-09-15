@@ -110,7 +110,6 @@ await app.ready()
 > security scheme declared in `components.securitySchemes`, not an API key
 > value. The empty array represents scopes and remains empty for API key
 > authentication.
->
 
 <a name="api"></a>
 ## API
