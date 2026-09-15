@@ -107,9 +107,9 @@ app.put('/some-route/:id', {
 await app.ready()
 ```
 > **Security note:** `apiKey` in the `security` array is the name of the
-> security scheme declared in `components.securitySchemes`, not an API key
-> value. The empty array represents scopes and remains empty for API key
-> authentication.
+> security scheme declared in `components.securitySchemes` (OpenAPI 3) or
+> `securityDefinitions` (Swagger 2.0), not an API key value. The empty array
+> represents scopes and remains empty for API key authentication.
 
 <a name="api"></a>
 ## API
