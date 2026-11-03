@@ -24,15 +24,6 @@ declare module 'openapi-types' {
   }
 }
 
-declare module 'fastify' {
-  interface FastifyInstance {
-    swaggerCSP: {
-      script: string[];
-      style: string[];
-    }
-  }
-}
-
 type FastifySwaggerUi = FastifyPluginCallback<fastifySwaggerUi.FastifySwaggerUiOptions>
 
 declare namespace fastifySwaggerUi {

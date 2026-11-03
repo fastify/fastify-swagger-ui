@@ -12,7 +12,6 @@ const {
   schemaSecurity,
   swaggerOption
 } = require('../examples/options')
-const csp = require('../static/csp.json')
 
 test('staticCSP = undefined', async (t) => {
   t.plan(3)
@@ -60,7 +59,7 @@ test('staticCSP = true', async (t) => {
       url: '/documentation'
     })
     t.assert.deepStrictEqual(res.statusCode, 200)
-    t.assert.deepStrictEqual(res.headers['content-security-policy'], `default-src 'self'; base-uri 'self'; font-src 'self' https: data:; frame-ancestors 'self'; img-src 'self' data: validator.swagger.io; object-src 'none'; script-src 'self' ${csp.script.join(' ')}; script-src-attr 'none'; style-src 'self' https: ${csp.style.join(' ')}; upgrade-insecure-requests;`)
+    t.assert.deepStrictEqual(res.headers['content-security-policy'], "default-src 'self'; base-uri 'self'; font-src 'self' https: data:; frame-ancestors 'self'; img-src 'self' data: validator.swagger.io; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' https:; upgrade-insecure-requests;")
     t.assert.deepStrictEqual(typeof res.payload, 'string')
   }
 
