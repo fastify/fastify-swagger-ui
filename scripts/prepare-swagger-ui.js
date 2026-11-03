@@ -2,7 +2,6 @@
 
 const fs = require('node:fs')
 const fse = require('fs-extra')
-const crypto = require('node:crypto')
 const swaggerUiAssetPath = require('swagger-ui-dist').getAbsoluteFSPath()
 const resolve = require('node:path').resolve
 
@@ -42,30 +41,3 @@ const overrides = [
 overrides.forEach(filename => {
   fse.copySync(`./${filename}`, resolve(`./static/${filename}`))
 })
-
-const sha = {
-  script: [],
-  style: []
-}
-function computeCSPHashes (path) {
-  const scriptRegex = /<script>(.*)<\/script>/gis
-  const styleRegex = /<style>(.*)<\/style>/gis
-  const indexSrc = fs.readFileSync(resolve(path)).toString('utf8')
-  let result = scriptRegex.exec(indexSrc)
-  while (result !== null) {
-    const hash = crypto.createHash('sha256')
-    hash.update(result[1])
-    sha.script.push(`'sha256-${hash.digest().toString('base64')}'`)
-    result = scriptRegex.exec(indexSrc)
-  }
-  result = styleRegex.exec(indexSrc)
-  while (result !== null) {
-    const hash = crypto.createHash('sha256')
-    hash.update(result[1])
-    sha.style.push(`'sha256-${hash.digest().toString('base64')}'`)
-    result = styleRegex.exec(indexSrc)
-  }
-}
-computeCSPHashes(`./${folderName}/index.html`)
-computeCSPHashes(`./${folderName}/oauth2-redirect.html`)
-fse.writeFileSync(resolve(`./${folderName}/csp.json`), JSON.stringify(sha))
