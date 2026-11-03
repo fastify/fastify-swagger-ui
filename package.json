@@ -1,6 +1,6 @@
 {
   "name": "@fastify/swagger-ui",
-  "version": "6.1.2",
+  "version": "6.1.3",
   "description": "Serve Swagger-ui for Fastify",
   "main": "index.js",
   "type": "commonjs",
