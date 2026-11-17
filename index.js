@@ -3,11 +3,8 @@
 const fsPromises = require('node:fs/promises')
 const path = require('node:path')
 const fp = require('fastify-plugin')
-const csp = require('./static/csp.json')
 
 async function fastifySwaggerUi (fastify, opts) {
-  fastify.decorate('swaggerCSP', csp)
-
   // if no logo is provided, read default static logo
   let logoContent = opts.logo
   if (logoContent === undefined) {
