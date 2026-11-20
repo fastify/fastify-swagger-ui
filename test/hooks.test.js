@@ -1,5 +1,6 @@
 'use strict'
 
+const { resolve } = require('node:path')
 const { test } = require('node:test')
 const Fastify = require('fastify')
 const yaml = require('yaml')
@@ -137,4 +138,81 @@ test('catch all added schema', async t => {
   await fastify.ready()
   const openapi = fastify.swagger()
   t.assert.deepStrictEqual(Object.keys(openapi.components.schemas), ['Root', 'Instance', 'Sub-Instance'])
+})
+
+test('hooks on files served from baseDir under /static', async t => {
+  const fastify = Fastify()
+  await fastify.register(require('@fastify/basic-auth'), authOptions)
+  await fastify.register(fastifySwagger, {
+    mode: 'static',
+    specification: {
+      path: './examples/example-static-specification.yaml'
+    }
+  })
+  await fastify.register(fastifySwaggerUi, {
+    baseDir: resolve(__dirname, '..', 'examples'),
+    uiHooks: {
+      onRequest: fastify.basicAuth
+    }
+  })
+
+  let res = await fastify.inject('/documentation/example-static-specification.yaml')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required on baseDir file')
+
+  res = await fastify.inject('/documentation/static/example-static-specification.yaml')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required on baseDir file under /static')
+
+  res = await fastify.inject({
+    method: 'HEAD',
+    url: '/documentation/static/example-static-specification.yaml'
+  })
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required on HEAD under /static')
+
+  res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/static/example-static-specification.yaml',
+    headers: { authorization: basicAuthEncode('admin', 'admin') }
+  })
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.ok(res.payload.includes('openapi'))
+})
+
+test('hooks on bundled static assets', async t => {
+  const fastify = Fastify()
+  await fastify.register(require('@fastify/basic-auth'), authOptions)
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, {
+    uiHooks: {
+      onRequest: fastify.basicAuth
+    }
+  })
+
+  let res = await fastify.inject('/documentation/static/swagger-ui.css')
+  t.assert.deepStrictEqual(res.statusCode, 401, 'auth required on bundled asset')
+
+  res = await fastify.inject({
+    method: 'GET',
+    url: '/documentation/static/swagger-ui.css',
+    headers: { authorization: basicAuthEncode('admin', 'admin') }
+  })
+  t.assert.deepStrictEqual(res.statusCode, 200)
+})
+
+test('arrays of hooks on static assets', async t => {
+  const calls = []
+  const fastify = Fastify()
+  await fastify.register(fastifySwagger, swaggerOption)
+  await fastify.register(fastifySwaggerUi, {
+    uiHooks: {
+      onRequest: [
+        (_req, _reply, done) => { calls.push('onRequest1'); done() },
+        async () => { calls.push('onRequest2') }
+      ],
+      preHandler: (_req, _reply, done) => { calls.push('preHandler'); done() }
+    }
+  })
+
+  const res = await fastify.inject('/documentation/static/swagger-ui.css')
+  t.assert.deepStrictEqual(res.statusCode, 200)
+  t.assert.deepStrictEqual(calls, ['onRequest1', 'onRequest2', 'preHandler'])
 })
